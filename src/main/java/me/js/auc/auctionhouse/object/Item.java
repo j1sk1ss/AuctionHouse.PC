@@ -5,6 +5,7 @@ import org.bukkit.inventory.ItemStack;
 
 import java.math.BigInteger;
 import java.util.Random;
+import java.util.UUID;
 
 
 public class Item {
@@ -13,11 +14,11 @@ public class Item {
         Item = itemStack;
         Price = price;
         Id = id;
-        UniqId = new Random().nextInt(999999999);
+        UniqId = UUID.randomUUID();
     }
     public ItemStack Item;
     public Double Price;
     public BigInteger Id;
     public PlayerData Owner;
-    public Integer UniqId;
+    public UUID UniqId;
 }

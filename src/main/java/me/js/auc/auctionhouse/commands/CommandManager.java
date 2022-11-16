@@ -11,24 +11,25 @@ import org.bukkit.command.CommandSender;
 import me.yic.xconomy.api.XConomyAPI;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-public class InitializeXconomy implements CommandExecutor {
+public class CommandManager implements CommandExecutor {
     private static final Logger log = Logger.getLogger("Minecraft");
-    XConomyAPI xcapi = new XConomyAPI();
+    public CommandManager(XConomyAPI xcapi) {
+        xConomyAPI = xcapi;
+    }
+    XConomyAPI xConomyAPI;
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
 
-        PlayerData playerData = xcapi.getPlayerData(sender.getName());
-        if (playerData == null) xcapi.createPlayerData(UUID.randomUUID(), sender.getName());
+        PlayerData playerData = xConomyAPI.getPlayerData(sender.getName());
+        if (playerData == null) xConomyAPI.createPlayerData(UUID.randomUUID(), sender.getName());
         else log.info("Player are initialized");
 
         if (command.getName().equalsIgnoreCase("auc")) {
-
+            return false;
         }
 
         if (command.getName().equalsIgnoreCase("balance")) {
-            Player player = (Player) sender;
-            player.sendMessage(playerData.getBalance().toString());
-            xcapi.changePlayerBalance(playerData.getUniqueId(), playerData.getName(), new BigDecimal(100), true);
+            return false;
         }
 
         return true;
