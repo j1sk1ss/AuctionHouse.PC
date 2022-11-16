@@ -1,0 +1,7 @@
+name: AuctionHouse
+version: '${project.version}'
+main: me.js.auc.auctionhouse.AuctionHouse
+api-version: 1.16
+authors: [ j1sk1ss ]
+description: Auction house for Potolot craft
+website: https://www.youtube.com/c/j1sk1ss
