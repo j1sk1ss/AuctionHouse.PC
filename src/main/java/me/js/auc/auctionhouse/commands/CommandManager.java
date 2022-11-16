@@ -20,18 +20,21 @@ public class CommandManager implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
 
-        PlayerData playerData = xConomyAPI.getPlayerData(sender.getName());
+        PlayerData playerData = getPlayerData(sender.getName());
+        Player player = (Player) sender;
+
         if (playerData == null) xConomyAPI.createPlayerData(UUID.randomUUID(), sender.getName());
         else log.info("Player are initialized");
 
-        if (command.getName().equalsIgnoreCase("auc")) {
-            return false;
-        }
+        if (command.getName().equalsIgnoreCase("moneys")) {
+            assert playerData != null;
 
-        if (command.getName().equalsIgnoreCase("balance")) {
-            return false;
+            player.sendMessage(playerData.getBalance().toString());
         }
 
         return true;
+    }
+    private PlayerData getPlayerData(String playerName) {
+        return xConomyAPI.getPlayerData(playerName);
     }
 }

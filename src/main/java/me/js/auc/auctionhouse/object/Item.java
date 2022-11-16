@@ -4,18 +4,21 @@ import org.bukkit.Bukkit;
 import org.bukkit.inventory.ItemStack;
 
 import java.math.BigInteger;
+import java.time.LocalDate;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Random;
 import java.util.UUID;
 
 
 public class Item {
-    public Item(ItemStack itemStack, Double price, BigInteger id, PlayerData owner) {
+    public Item(ItemStack itemStack, Double price, PlayerData owner) {
         Owner = owner;
         Item = itemStack;
         Price = price;
-        Id = id;
         UniqId = UUID.randomUUID();
     }
+    public Date expiredDate;
     public ItemStack Item;
     public Double Price;
     public BigInteger Id;

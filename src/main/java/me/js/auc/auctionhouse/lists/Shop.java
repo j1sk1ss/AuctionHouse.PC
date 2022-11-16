@@ -1,4 +1,4 @@
-package me.js.auc.auctionhouse;
+package me.js.auc.auctionhouse.lists;
 
 import me.js.auc.auctionhouse.object.Item;
 

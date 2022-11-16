@@ -1,10 +1,8 @@
-package me.js.auc.auctionhouse;
+package me.js.auc.auctionhouse.lists;
 
 import me.js.auc.auctionhouse.object.Item;
 import me.yic.xconomy.data.syncdata.PlayerData;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.List;
