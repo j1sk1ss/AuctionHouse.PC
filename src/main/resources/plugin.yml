@@ -6,5 +6,7 @@ authors: [ j1sk1ss ]
 description: Auction house for Potolot craft
 website: https://www.youtube.com/c/j1sk1ss
 commands:
-  check:
-    description: Player balance
+  auc:
+    description: If Xconomy don`t create player information, auc created it by himself
+  balance:
+    description: Show Xconomy balance
