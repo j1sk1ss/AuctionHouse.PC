@@ -29,6 +29,9 @@ public class CommandManager implements CommandExecutor {
         Player player = (Player) sender;
 
         if (command.getName().equalsIgnoreCase("moneys")) {
+
+            log.info(playerData.getBalance().toString());
+
             assert playerData != null;
             shopWindow.ShowWindow(0, player);
             player.sendMessage(playerData.getBalance().toString());
