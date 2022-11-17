@@ -13,21 +13,19 @@ import org.bukkit.inventory.Inventory;
 
 public class ShopWindow {
 
-    public ShopWindow(Integer size, String name, Player player, MoneyTransfer moneyTransfer, XConomyAPI xConomyAPI) {
+    public ShopWindow(Integer size, String name, MoneyTransfer moneyTransfer, XConomyAPI xConomyAPI) {
         this.xConomyAPI = xConomyAPI;
         this.moneyTransfer = moneyTransfer;
         this.name = name;
-        this.player = player;
         shopWindow = Bukkit.createInventory(null, size, name);
     }
     String name;
-    Player player;
     Inventory shopWindow;
     Shop shopList;
     MoneyTransfer moneyTransfer;
     XConomyAPI xConomyAPI;
-    public void ShowWindow(Integer window) {
-        if (shopList.shopList.size() < window * shopWindow.getSize()) return;
+    public void ShowWindow(Integer window, Player player) {
+        //if (shopList.shopList.size() < window * shopWindow.getSize()) return;
         player.closeInventory();
 
         player.openInventory(shopWindow);
