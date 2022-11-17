@@ -16,6 +16,19 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
+/*
+    <->
+    ROADMAP:
+
+    1. Window switcher in aucWin
+        1.1 Sorting in aucWin
+        1.2 Async cashing of variables
+
+    2. Include LuckPerms
+
+    <->
+*/
+
 public final class AuctionHouse extends JavaPlugin {
     Shop shop = new Shop();
     XConomyAPI xConomyAPI;
