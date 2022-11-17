@@ -10,12 +10,10 @@ import org.bukkit.inventory.ItemStack;
 
 public class ApproveWindow implements IWindow {
 
-    public ApproveWindow(ItemStack chosenItem, Player player) {
-        this.player = player;
+    public ApproveWindow(ItemStack chosenItem) {
         this.chosenItem = chosenItem;
     }
     private Inventory approveWindow;
-    private final Player player;
     private final ItemStack chosenItem;
 
     private void FillWindow() {

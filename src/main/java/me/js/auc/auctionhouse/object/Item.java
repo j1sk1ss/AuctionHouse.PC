@@ -21,7 +21,6 @@ public class Item {
     public Date expiredDate;
     public ItemStack Item;
     public Double Price;
-    public BigInteger Id;
     public PlayerData Owner;
     public UUID UniqId;
 }

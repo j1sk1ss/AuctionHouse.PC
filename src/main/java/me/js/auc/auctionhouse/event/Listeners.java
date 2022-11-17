@@ -30,7 +30,7 @@ public class Listeners implements Listener {
                 switch (event.getView().getTitle()) {
                     case "Рынок":
                         ApproveWindow approveWindow =
-                                new ApproveWindow(event.getCurrentItem(), (Player) event.getWhoClicked());
+                                new ApproveWindow(event.getCurrentItem());
                         approveWindow.ShowWindow(0, player);
                         break;
 
