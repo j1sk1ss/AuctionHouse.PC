@@ -8,7 +8,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.Objects;
 import java.util.UUID;
 

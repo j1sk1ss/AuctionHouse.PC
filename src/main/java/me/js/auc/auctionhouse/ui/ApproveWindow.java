@@ -1,44 +1,36 @@
 package me.js.auc.auctionhouse.ui;
 
-import me.js.auc.auctionhouse.lists.Shop;
-import me.js.auc.auctionhouse.scripts.MoneyTransfer;
-import me.yic.xconomy.api.XConomyAPI;
+import me.js.auc.auctionhouse.interfaces.IWindow;
+import me.js.auc.auctionhouse.scripts.ItemWorker;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-public class ApproveWindow {
+public class ApproveWindow implements IWindow {
 
-    public ApproveWindow(XConomyAPI xConomyAPI, MoneyTransfer moneyTransfer, Shop shopList, Inventory shopWindow, ItemStack chosenItem,
-    Player player) {
-        this.xConomyAPI = xConomyAPI;
-        this.moneyTransfer = moneyTransfer;
-        this.shopList = shopList;
-        this.shopWindow = shopWindow;
+    public ApproveWindow(ItemStack chosenItem, Player player) {
+        this.player = player;
         this.chosenItem = chosenItem;
-
-        approveWindow = Bukkit.createInventory(null, 9, "Покупка");
-        FillApprove();
-        player.openInventory(approveWindow);
     }
-    private final Inventory approveWindow;
-    private final XConomyAPI xConomyAPI;
-    private final MoneyTransfer moneyTransfer;
-    private final Shop shopList;
-    private final Inventory shopWindow;
+    private Inventory approveWindow;
+    private final Player player;
     private final ItemStack chosenItem;
 
-    private void FillApprove() {
-        approveWindow.setItem(0, new ItemStack(Material.RED_STAINED_GLASS_PANE));
-        approveWindow.setItem(1, new ItemStack(Material.RED_STAINED_GLASS_PANE));
-        approveWindow.setItem(2, new ItemStack(Material.RED_STAINED_GLASS_PANE));
+    private void FillWindow() {
+        ItemWorker itemWorker = new ItemWorker();
+        ItemStack tempBlock = new ItemStack(Material.RED_STAINED_GLASS_PANE);
+        for (int i = 0; i < 3; i++) approveWindow.setItem(i, itemWorker.SetName(tempBlock, "ОТМЕНА"));
 
         approveWindow.setItem(4, chosenItem);
 
-        approveWindow.setItem(6, new ItemStack(Material.GREEN_STAINED_GLASS_PANE));
-        approveWindow.setItem(7, new ItemStack(Material.GREEN_STAINED_GLASS_PANE));
-        approveWindow.setItem(8, new ItemStack(Material.GREEN_STAINED_GLASS_PANE));
+        tempBlock = new ItemStack(Material.GREEN_STAINED_GLASS_PANE);
+        for (int i = 6; i < 9; i++) approveWindow.setItem(i, itemWorker.SetName(tempBlock, "КУПИТЬ"));
+    }
+    public void ShowWindow(Integer window, Player player) {
+        approveWindow = Bukkit.createInventory(null, 9, "Покупка");
+        FillWindow();
+        player.openInventory(approveWindow);
     }
 }

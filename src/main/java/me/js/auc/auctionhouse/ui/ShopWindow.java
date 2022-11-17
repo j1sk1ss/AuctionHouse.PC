@@ -1,5 +1,6 @@
 package me.js.auc.auctionhouse.ui;
 
+import me.js.auc.auctionhouse.interfaces.IWindow;
 import me.js.auc.auctionhouse.lists.Shop;
 import me.js.auc.auctionhouse.scripts.MoneyTransfer;
 import me.yic.xconomy.api.XConomyAPI;
@@ -11,7 +12,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.inventory.Inventory;
 
 
-public class ShopWindow implements Listener {
+public class ShopWindow implements Listener, IWindow {
 
 
     public ShopWindow(Integer size, String name, MoneyTransfer moneyTransfer, XConomyAPI xConomyAPI, Shop shopList) {
