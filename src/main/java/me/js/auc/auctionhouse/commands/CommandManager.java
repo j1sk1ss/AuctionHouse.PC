@@ -4,7 +4,9 @@ import java.util.UUID;
 import java.util.logging.Logger;
 
 import me.js.auc.auctionhouse.lists.Shop;
+import me.js.auc.auctionhouse.object.Item;
 import me.js.auc.auctionhouse.scripts.MoneyTransfer;
+import me.js.auc.auctionhouse.ui.CostSetter;
 import me.js.auc.auctionhouse.ui.ShopWindow;
 import me.yic.xconomy.data.syncdata.PlayerData;
 import org.bukkit.Material;
@@ -19,9 +21,11 @@ public class CommandManager implements CommandExecutor {
     private static final Logger log = Logger.getLogger("Minecraft");
     public CommandManager(XConomyAPI xcapi, Shop shop, MoneyTransfer moneyTransfer) {
         xConomyAPI = xcapi;
+        this.shop = shop;
         this.moneyTransfer = moneyTransfer;
-        shopWindow = new ShopWindow(27, "Shop test", moneyTransfer, xConomyAPI, shop);
+        shopWindow = new ShopWindow(27, "Рынок", moneyTransfer, xConomyAPI, shop);
     }
+    private final Shop shop;
     private final MoneyTransfer moneyTransfer;
     private final ShopWindow shopWindow;
     private final XConomyAPI xConomyAPI;
@@ -35,11 +39,7 @@ public class CommandManager implements CommandExecutor {
         }
 
         if (command.getName().equals("sell")) {
-            ItemStack chosenItem = player.getInventory().getItemInMainHand();
-
-            moneyTransfer.SellItem(100d, playerData, chosenItem);
-
-            player.getInventory().setItemInMainHand(null);
+            CostSetter costSetter = new CostSetter(player, player.getInventory().getItemInMainHand());
         }
 
         if (command.getName().equals("item_info")) {
