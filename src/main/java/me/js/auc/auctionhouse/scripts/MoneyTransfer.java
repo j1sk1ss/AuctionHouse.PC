@@ -14,7 +14,6 @@ import java.util.UUID;
 import static org.bukkit.Bukkit.getServer;
 
 public class MoneyTransfer {
-
     public MoneyTransfer(Shop shop, XConomyAPI xConomyAPI) {
         this.shop = shop;
         this.xConomyAPI = xConomyAPI;
@@ -44,11 +43,9 @@ public class MoneyTransfer {
     private void ChangeBalance(PlayerData player, Double amount, Boolean isAdd) {
         xConomyAPI.changePlayerBalance(player.getUniqueId(), player.getName(), new BigDecimal(amount), isAdd);
     }
-
     private Player getPlayerByUuid(UUID uuid) {
         for(Player p : getServer().getOnlinePlayers())
             if(p.getUniqueId().equals(uuid)) return p;
         throw new IllegalArgumentException();
     }
-
 }

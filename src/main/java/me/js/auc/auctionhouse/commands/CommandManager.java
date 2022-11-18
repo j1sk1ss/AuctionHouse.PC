@@ -32,7 +32,10 @@ public class CommandManager implements CommandExecutor {
         Player player = Bukkit.getPlayer(args[nicknameArg]);
         if (player == null) return true;
 
-        if (!isHaveAccess(player, accessedGroups)) return true;
+        if (!isHaveAccess(player, accessedGroups)) {
+            player.sendMessage("У вас нет прав для использования этой комманды!");
+            return true;
+        }
 
         if (command.getName().equals("shop")) {
             ShopWindow shopWindow = new ShopWindow(27, "Рынок", shop);
@@ -44,7 +47,6 @@ public class CommandManager implements CommandExecutor {
             moneyTransfer.SellItem(Double.parseDouble(args[costArg]), xConomyAPI.getPlayerData(player.getUniqueId()),
                     player.getInventory().getItemInMainHand());
             player.getInventory().setItemInMainHand(null);
-
         }
 
         return true;
