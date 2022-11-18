@@ -2,6 +2,8 @@ package me.js.auc.auctionhouse;
 
 import java.util.Objects;
 
+import me.js.auc.auctionhouse.event.ServerTicker;
+import me.js.auc.auctionhouse.lists.Expired;
 import me.js.auc.auctionhouse.lists.Shop;
 import me.js.auc.auctionhouse.commands.CommandManager;
 
@@ -16,10 +18,13 @@ public final class AuctionHouse extends JavaPlugin {
         XConomyAPI xConomyAPI = new XConomyAPI();
         MoneyTransfer moneyTransfer = new MoneyTransfer(shop, xConomyAPI);
 
+        ServerTicker serverTicker = new ServerTicker(this, shop);
+
         CommandManager commandManager = new CommandManager(xConomyAPI, shop, moneyTransfer, this);
 
         Objects.requireNonNull(getCommand("shop")).setExecutor(commandManager);
         Objects.requireNonNull(getCommand("sell")).setExecutor(commandManager);
+        Objects.requireNonNull(getCommand("expired")).setExecutor(commandManager);
 
     }
     @Override

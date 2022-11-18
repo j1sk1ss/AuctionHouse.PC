@@ -30,6 +30,11 @@ public class ShopWindow implements Listener, IWindow {
         return this;
     }
 
+    @Override
+    public ExpiredWindow GetExpiredWindow() {
+        return null;
+    }
+
     private void FillWindow(Integer startIndex, Integer indexWindow) {
         ItemWorker itemWorker = new ItemWorker();
         int itemsOnPage = Math.min(shopWindow.getSize(), shopList.shopList.size() - startIndex);
@@ -40,9 +45,11 @@ public class ShopWindow implements Listener, IWindow {
             Item chosenItem = shopList.shopList.get(i);
             ItemStack tempItem = chosenItem.Item;
 
-            itemWorker.SetLore(tempItem, "Цена: " + chosenItem.Price + "\nВладелец: " + chosenItem.Owner.getName());
+            tempItem = itemWorker.SetLore(tempItem, "Цена: " +
+                    chosenItem.Price + "\nВладелец: " + chosenItem.Owner.getName() +
+                    "\nСрок: " + chosenItem.ticks);
 
-            shopWindow.setItem(i, shopList.shopList.get(i).Item);
+            shopWindow.setItem(i, tempItem);
         }
 
         ItemStack itemStack = itemWorker.SetName(new ItemStack(Material.ACACIA_BOAT), indexWindow - 1 + "");

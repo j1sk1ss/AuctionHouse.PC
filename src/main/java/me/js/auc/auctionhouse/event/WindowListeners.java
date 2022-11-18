@@ -20,12 +20,10 @@ public class WindowListeners implements Listener {
         this.moneyTransfer = moneyTransfer;
         this.xConomyAPI = xConomyAPI;
         this.shop = shop;
-        this.window = window;
         shopWindow = window.GetShopWindow();
         this.owner = owner;
     }
     private final Player owner;
-    private final IWindow window;
     private final Shop shop;
     private final MoneyTransfer moneyTransfer;
     private final XConomyAPI xConomyAPI;
@@ -40,6 +38,7 @@ public class WindowListeners implements Listener {
                 switch (event.getView().getTitle()) {
                     case "Рынок" -> {
                         final int windowCapacity = 45;
+
                         if (event.getSlot() < windowCapacity) {
                             ApproveWindow approveWindow =
                                     new ApproveWindow(event.getCurrentItem());
@@ -48,6 +47,7 @@ public class WindowListeners implements Listener {
                             SwipePage(Integer.parseInt(Objects.requireNonNull
                                     (event.getCurrentItem()).getItemMeta().getDisplayName()), player);
                         }
+
                         event.setCancelled(true);
                     }
                     case "Покупка" -> {
@@ -56,7 +56,8 @@ public class WindowListeners implements Listener {
                             moneyTransfer.BuyItem(getPlayerData(player.getName()), shop.shopList.get(itemPosition).UniqId);
                             event.getInventory().setItem(itemPosition, null);
                         }
-                        GetDefaultWindow(player, 0);
+
+                        GetDefaultWindow(player);
                         event.setCancelled(true);
                     }
                 }
@@ -65,13 +66,12 @@ public class WindowListeners implements Listener {
     }
     private void SwipePage(Integer window, Player player) {
         if (shopWindow == null) return;
-        player.sendMessage("1");
         shopWindow.ShowWindow(window, player);
     }
-    private void GetDefaultWindow(Player player, Integer window) {
+    private void GetDefaultWindow(Player player) {
         player.closeInventory();
         ShopWindow shopWindow = new ShopWindow(54, "Рынок", shop);
-        shopWindow.ShowWindow(window, player);
+        shopWindow.ShowWindow(0, player);
     }
     private PlayerData getPlayerData(String playerName) {
         return xConomyAPI.getPlayerData(playerName);

@@ -12,3 +12,6 @@ commands:
   sell:
     description: sell chosen item
     usage: /sell <player_nickname> <price>
+  expired:
+    description: open expired window
+    usage: /expired <player_nickname>

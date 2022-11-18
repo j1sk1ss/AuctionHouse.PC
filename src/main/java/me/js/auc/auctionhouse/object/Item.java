@@ -1,4 +1,5 @@
 package me.js.auc.auctionhouse.object;
+import com.google.common.primitives.UnsignedInteger;
 import me.yic.xconomy.data.syncdata.PlayerData;
 import org.bukkit.Bukkit;
 import org.bukkit.inventory.ItemStack;
@@ -18,6 +19,7 @@ public class Item {
         Price = price;
         UniqId = UUID.randomUUID();
     }
+    public Integer ticks = 1000;
     public Date expiredDate;
     public ItemStack Item;
     public Double Price;

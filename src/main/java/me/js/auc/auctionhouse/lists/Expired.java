@@ -9,24 +9,10 @@ import java.util.List;
 import java.util.Objects;
 
 public class Expired {
-
     public Expired(PlayerData owner) {
         Owner = owner;
         expiredList = new ArrayList<Item>();
     }
     public PlayerData Owner;
     public List<Item> expiredList;
-
-    public void GetItem(Integer uniqId) {
-        for (int i = 0; i < expiredList.size(); i++) {
-            Item item = expiredList.get(i);
-
-            if (!Objects.equals(uniqId, item.UniqId)) continue;
-            expiredList.remove(i);
-
-            Player player = (Player) Owner;
-            player.getInventory().addItem(item.Item);
-            break;
-        }
-    }
 }

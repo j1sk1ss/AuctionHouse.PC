@@ -41,4 +41,9 @@ public class ApproveWindow implements IWindow {
     public ShopWindow GetShopWindow() {
         return null;
     }
+
+    @Override
+    public ExpiredWindow GetExpiredWindow() {
+        return null;
+    }
 }
