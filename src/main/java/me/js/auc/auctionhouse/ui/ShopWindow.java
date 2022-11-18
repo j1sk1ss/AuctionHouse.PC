@@ -24,23 +24,31 @@ public class ShopWindow implements Listener, IWindow {
         FillWindow(window * shopWindow.getSize(), window);
         player.openInventory(shopWindow);
     }
+
+    @Override
+    public ShopWindow GetShopWindow() {
+        return this;
+    }
+
     private void FillWindow(Integer startIndex, Integer indexWindow) {
         ItemWorker itemWorker = new ItemWorker();
         int itemsOnPage = Math.min(shopWindow.getSize(), shopList.shopList.size() - startIndex);
 
-        final int PageCapacity = 18;
+        final int PageCapacity = 41;
         int count = Math.min(itemsOnPage, PageCapacity);
         for (int i = startIndex; i < count; i++) {
             Item chosenItem = shopList.shopList.get(i);
             ItemStack tempItem = chosenItem.Item;
-            itemWorker.SetName(tempItem, tempItem.getI18NDisplayName() + " Цена:" +
-                    "" + chosenItem.Price + " Владелец:" + chosenItem.Owner.getName());
+
+            itemWorker.SetLore(tempItem, "Цена: " + chosenItem.Price + "\nВладелец: " + chosenItem.Owner.getName());
 
             shopWindow.setItem(i, shopList.shopList.get(i).Item);
         }
 
-        ItemStack itemStack = new ItemStack(Material.ACACIA_BOAT);
-        shopWindow.setItem(18, itemWorker.SetName(itemStack, indexWindow - 1 + ""));
-        shopWindow.setItem(19, itemWorker.SetName(itemStack, indexWindow + 1 + ""));
+        ItemStack itemStack = itemWorker.SetName(new ItemStack(Material.ACACIA_BOAT), indexWindow - 1 + "");
+        shopWindow.setItem(45, itemStack);
+
+        itemStack = itemWorker.SetName(new ItemStack(Material.ACACIA_BOAT), indexWindow + 1 + "");
+        shopWindow.setItem(53, itemStack);
     }
 }

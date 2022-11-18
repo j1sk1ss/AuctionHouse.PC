@@ -1,25 +1,28 @@
 package me.js.auc.auctionhouse.commands;
 
+import me.js.auc.auctionhouse.event.WindowListeners;
 import me.js.auc.auctionhouse.lists.Shop;
 import me.js.auc.auctionhouse.scripts.MoneyTransfer;
 import me.js.auc.auctionhouse.ui.ShopWindow;
 import me.yic.xconomy.api.XConomyAPI;
 
-import net.luckperms.api.LuckPerms;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.RegisteredServiceProvider;
+import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
 public class CommandManager implements CommandExecutor {
-    public CommandManager(XConomyAPI xConomyAPI, Shop shop, MoneyTransfer moneyTransfer) {
+    public CommandManager(XConomyAPI xConomyAPI, Shop shop, MoneyTransfer moneyTransfer,
+    Plugin plugin) {
         this.xConomyAPI = xConomyAPI;
         this.shop = shop;
         this.moneyTransfer = moneyTransfer;
+        this.plugin = plugin;
     }
+    private final Plugin plugin;
     private final String[] accessedGroups = {"testGroup"};
     private final Shop shop;
     private final MoneyTransfer moneyTransfer;
@@ -38,7 +41,10 @@ public class CommandManager implements CommandExecutor {
         }
 
         if (command.getName().equals("shop")) {
-            ShopWindow shopWindow = new ShopWindow(27, "Рынок", shop);
+            ShopWindow shopWindow = new ShopWindow(54, "Рынок", shop);
+
+            WindowListeners windowListeners = new WindowListeners(moneyTransfer, xConomyAPI, shop, shopWindow, player);
+            Bukkit.getPluginManager().registerEvents(windowListeners, plugin);
             shopWindow.ShowWindow(0, player);
         }
 
