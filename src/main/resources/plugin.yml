@@ -6,5 +6,9 @@ authors: [ j1sk1ss ]
 description: Auction house for Potolot craft
 website: https://www.youtube.com/c/j1sk1ss
 commands:
-  moneys:
-    description: open window
+  shop:
+    description: open shop window
+    usage: /shop <player_nickname>
+  sell:
+    description: sell chosen item
+    usage: /sell <player_nickname> <price>

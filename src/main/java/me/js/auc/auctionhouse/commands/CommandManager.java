@@ -6,10 +6,12 @@ import me.js.auc.auctionhouse.ui.ShopWindow;
 import me.yic.xconomy.api.XConomyAPI;
 
 import net.luckperms.api.LuckPerms;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.jetbrains.annotations.NotNull;
 
 public class CommandManager implements CommandExecutor {
@@ -18,14 +20,19 @@ public class CommandManager implements CommandExecutor {
         this.shop = shop;
         this.moneyTransfer = moneyTransfer;
     }
+    private final String[] accessedGroups = {"testGroup"};
     private final Shop shop;
     private final MoneyTransfer moneyTransfer;
     private final XConomyAPI xConomyAPI;
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command,
                              @NotNull String label, @NotNull String[] args) {
+        final int nicknameArg = 0;
 
-        Player player = (Player) sender;
+        Player player = Bukkit.getPlayer(args[nicknameArg]);
+        if (player == null) return true;
+
+        if (!isHaveAccess(player, accessedGroups)) return true;
 
         if (command.getName().equals("shop")) {
             ShopWindow shopWindow = new ShopWindow(27, "Рынок", shop);
@@ -33,11 +40,19 @@ public class CommandManager implements CommandExecutor {
         }
 
         if (command.getName().equals("sell")) {
-            moneyTransfer.SellItem(Double.parseDouble(args[0]), xConomyAPI.getPlayerData(player.getUniqueId()),
+            final int costArg = 1;
+            moneyTransfer.SellItem(Double.parseDouble(args[costArg]), xConomyAPI.getPlayerData(player.getUniqueId()),
                     player.getInventory().getItemInMainHand());
             player.getInventory().setItemInMainHand(null);
+
         }
 
         return true;
+    }
+    public static boolean isHaveAccess(Player player, String[] groups) {
+        for (String group : groups) {
+            if (player.hasPermission("group." + group)) return true;
+        }
+        return false;
     }
 }

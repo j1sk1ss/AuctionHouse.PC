@@ -2,6 +2,7 @@ package me.js.auc.auctionhouse.ui;
 
 import me.js.auc.auctionhouse.interfaces.IWindow;
 import me.js.auc.auctionhouse.lists.Shop;
+import me.js.auc.auctionhouse.object.Item;
 import me.js.auc.auctionhouse.scripts.ItemWorker;
 
 import org.bukkit.Bukkit;
@@ -30,9 +31,10 @@ public class ShopWindow implements Listener, IWindow {
         final int PageCapacity = 18;
         int count = Math.min(itemsOnPage, PageCapacity);
         for (int i = startIndex; i < count; i++) {
-            ItemStack tempItem = shopList.shopList.get(i).Item;
+            Item chosenItem = shopList.shopList.get(i);
+            ItemStack tempItem = chosenItem.Item;
             itemWorker.SetName(tempItem, tempItem.getI18NDisplayName() + " Цена:" +
-                    "" + shopList.shopList.get(i).Price);
+                    "" + chosenItem.Price + " Владелец:" + chosenItem.Owner.getName());
 
             shopWindow.setItem(i, shopList.shopList.get(i).Item);
         }

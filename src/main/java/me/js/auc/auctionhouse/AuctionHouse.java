@@ -21,8 +21,11 @@ public final class AuctionHouse extends JavaPlugin {
 
         Objects.requireNonNull(getCommand("shop")).setExecutor(commandManager);
         Objects.requireNonNull(getCommand("sell")).setExecutor(commandManager);
-        Objects.requireNonNull(getCommand("item_info")).setExecutor(commandManager);
 
         Bukkit.getPluginManager().registerEvents(new Listeners(moneyTransfer, xConomyAPI, shop), this);
+    }
+    @Override
+    public void onDisable() {
+        super.onDisable();
     }
 }
