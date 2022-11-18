@@ -11,6 +11,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 
+import java.util.Objects;
+
 public class Listeners implements Listener {
     public Listeners(MoneyTransfer moneyTransfer, XConomyAPI xConomyAPI, Shop shop) {
         this.moneyTransfer = moneyTransfer;
@@ -29,9 +31,14 @@ public class Listeners implements Listener {
                 if (!event.isLeftClick()) return;
                 switch (event.getView().getTitle()) {
                     case "Рынок":
-                        ApproveWindow approveWindow =
-                                new ApproveWindow(event.getCurrentItem());
-                        approveWindow.ShowWindow(0, player);
+                            if (event.getSlot() < 18) {
+                                ApproveWindow approveWindow =
+                                        new ApproveWindow(event.getCurrentItem());
+                                approveWindow.ShowWindow(0, player);
+                            } else {
+                                GetDefaultWindow(player, Integer.getInteger(Objects.requireNonNull(event.getInventory().
+                                        getItem(event.getSlot())).getItemMeta().getDisplayName()));
+                            }
                         break;
 
                     case "Покупка":
@@ -40,17 +47,17 @@ public class Listeners implements Listener {
                                 moneyTransfer.BuyItem(getPlayerData(player.getName()), shop.shopList.get(itemPosition).UniqId);
                                 event.getInventory().setItem(itemPosition, null);
                             }
-                        GetDefaultWindow(player);
+                        GetDefaultWindow(player, 0);
                         break;
                 }
                 event.setCancelled(true);
             }
         }
     }
-    private void GetDefaultWindow(Player player) {
+    private void GetDefaultWindow(Player player, Integer window) {
         player.closeInventory();
-        ShopWindow shopWindow = new ShopWindow(27, "Рынок", moneyTransfer, xConomyAPI, shop);
-        shopWindow.ShowWindow(0, player);
+        ShopWindow shopWindow = new ShopWindow(27, "Рынок", shop);
+        shopWindow.ShowWindow(window, player);
     }
     private PlayerData getPlayerData(String playerName) {
         return xConomyAPI.getPlayerData(playerName);

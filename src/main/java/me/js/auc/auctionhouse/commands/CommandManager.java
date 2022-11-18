@@ -27,7 +27,7 @@ public class CommandManager implements CommandExecutor {
         Player player = (Player) sender;
 
         if (command.getName().equals("shop")) {
-            ShopWindow shopWindow = new ShopWindow(27, "Рынок", moneyTransfer, this.xConomyAPI, shop);
+            ShopWindow shopWindow = new ShopWindow(27, "Рынок", shop);
             shopWindow.ShowWindow(0, player);
         }
 

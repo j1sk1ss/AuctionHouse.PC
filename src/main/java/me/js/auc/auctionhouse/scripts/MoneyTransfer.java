@@ -17,11 +17,10 @@ public class MoneyTransfer {
 
     public MoneyTransfer(Shop shop, XConomyAPI xConomyAPI) {
         this.shop = shop;
-        xcapi = xConomyAPI;
+        this.xConomyAPI = xConomyAPI;
     }
     private final Shop shop;
-    private final XConomyAPI xcapi;
-
+    private final XConomyAPI xConomyAPI;
     public void SellItem(Double price, PlayerData player, ItemStack item) {
         Item sellItem = new Item(item, price, player);
         shop.shopList.add(sellItem);
@@ -43,7 +42,7 @@ public class MoneyTransfer {
         }
     }
     private void ChangeBalance(PlayerData player, Double amount, Boolean isAdd) {
-        xcapi.changePlayerBalance(player.getUniqueId(), player.getName(), new BigDecimal(amount), isAdd);
+        xConomyAPI.changePlayerBalance(player.getUniqueId(), player.getName(), new BigDecimal(amount), isAdd);
     }
 
     private Player getPlayerByUuid(UUID uuid) {
