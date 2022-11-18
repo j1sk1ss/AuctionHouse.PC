@@ -5,6 +5,7 @@ import me.js.auc.auctionhouse.scripts.MoneyTransfer;
 import me.js.auc.auctionhouse.ui.ShopWindow;
 import me.yic.xconomy.api.XConomyAPI;
 
+import net.luckperms.api.LuckPerms;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
