@@ -49,7 +49,7 @@ public class CommandManager implements CommandExecutor {
             WindowListeners<ShopWindow> windowListeners = new WindowListeners<>(moneyTransfer, xConomyAPI, shop, shopWindow, player);
             Bukkit.getPluginManager().registerEvents(windowListeners, plugin);
 
-            shopWindow.ShowWindow(0, player);
+            shopWindow.ShowWindow(0, player, true);
         }
 
         if (command.getName().equals("sell")) {
@@ -64,7 +64,7 @@ public class CommandManager implements CommandExecutor {
             moneyTransfer.SellItem(Double.parseDouble(args[costArg]), xConomyAPI.getPlayerData(player.getUniqueId()),
                     sellingItem);
 
-            player.sendMessage("Предмет: " + sellingItem.getI18NDisplayName() +
+            player.sendMessage("Предмет: " + sellingItem.getI18NDisplayName() + " X" + sellingItem.getAmount() +
                     ". Выставлен на торговую площадку за: " + args[costArg]+ "₽");
             player.getInventory().setItemInMainHand(null);
         }
@@ -75,7 +75,7 @@ public class CommandManager implements CommandExecutor {
             WindowListeners<ExpiredWindow> windowListeners = new WindowListeners<>(moneyTransfer, xConomyAPI, shop, expiredWindow, player);
             Bukkit.getPluginManager().registerEvents(windowListeners, plugin);
 
-            expiredWindow.ShowWindow(0, player);
+            expiredWindow.ShowWindow(0, player, true);
         }
 
         return true;

@@ -9,6 +9,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
@@ -21,10 +22,10 @@ public class ShopWindow implements Listener, IWindow<ShopWindow> {
     private final Shop shopList;
     final Integer PageCapacity = 45;
     @Override
-    public void ShowWindow(Integer window, Player player) {
+    public void ShowWindow(Integer window, Player player, Boolean open) {
         shopWindow.clear();
         FillWindow(window * PageCapacity, window);
-        player.openInventory(shopWindow);
+        if (open) player.openInventory(shopWindow);
     }
     private void FillWindow(Integer startIndex, Integer indexWindow) {
         ItemWorker itemWorker = new ItemWorker();
@@ -35,8 +36,10 @@ public class ShopWindow implements Listener, IWindow<ShopWindow> {
 
             Item chosenItem = shopList.shopList.get(i);
             ItemStack tempItem = chosenItem.Item;
-            tempItem = itemWorker.SetLore(tempItem, "Цена: " +
-                    chosenItem.Price + "₽" + "\nВладелец: " + chosenItem.Owner.getName() +
+            tempItem = itemWorker.SetLore(tempItem,
+                    "Цена: " + chosenItem.Price + "₽" +
+                    "\nЦена за еденицу: " + (chosenItem.Price/chosenItem.Item.getAmount())+ "₽" +
+                    "\nВладелец: " + chosenItem.Owner.getName() +
                     "\nСрок: " + chosenItem.expiredDelay);
 
             shopWindow.setItem(i - startIndex, tempItem);

@@ -31,10 +31,10 @@ public class ApproveWindow implements IWindow<ApproveWindow> {
         approveWindow.setItem(7, tempBlock);
         approveWindow.setItem(8, tempBlock);
     }
-    public void ShowWindow(Integer window, Player player) {
+    public void ShowWindow(Integer window, Player player, Boolean open) {
         approveWindow = Bukkit.createInventory(player, 9, "Покупка");
         FillWindow();
-        player.openInventory(approveWindow);
+        if (open) player.openInventory(approveWindow);
     }
 
     @Override

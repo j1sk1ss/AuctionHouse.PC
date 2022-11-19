@@ -9,6 +9,7 @@ import me.yic.xconomy.data.syncdata.PlayerData;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
@@ -23,10 +24,10 @@ public class ExpiredWindow implements IWindow<ExpiredWindow> {
     private final Inventory expiredWindow;
     final Integer PageCapacity = 45;
     @Override
-    public void ShowWindow(Integer window, Player player) {
+    public void ShowWindow(Integer window, Player player, Boolean open) {
         expiredWindow.clear();
         FillWindow(window * PageCapacity, window);
-        player.openInventory(expiredWindow);
+        if (open) player.openInventory(expiredWindow);
     }
     private void FillWindow(Integer startIndex, Integer indexWindow) {
         ItemWorker itemWorker = new ItemWorker();

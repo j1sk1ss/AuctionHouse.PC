@@ -7,10 +7,13 @@ import me.js.auc.auctionhouse.ui.ExpiredWindow;
 import me.js.auc.auctionhouse.ui.ShopWindow;
 import me.yic.xconomy.api.XConomyAPI;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 
 import java.util.Objects;
 
@@ -23,12 +26,25 @@ public class WindowListeners<T> implements Listener {
         this.owner = owner;
         this.window = window;
     }
-    private final Player owner;
-    private final Shop shop;
-    private final MoneyTransfer moneyTransfer;
-    private final XConomyAPI xConomyAPI;
-    private final PluginManager pluginManager = new PluginManager();
+    private Player owner;
+    private Shop shop;
+    private MoneyTransfer moneyTransfer;
+    private XConomyAPI xConomyAPI;
+    private PluginManager pluginManager = new PluginManager();
     public T window;
+    private Boolean isClose = false;
+    @EventHandler
+    public void Closed(InventoryCloseEvent event) {
+        if (isClose) {
+            owner = null;
+            moneyTransfer = null;
+            xConomyAPI = null;
+            pluginManager = null;
+            shop = null;
+        } else {
+            isClose = true;
+        }
+    }
     @EventHandler
     public void onClick(InventoryClickEvent event) {
         if (event.getWhoClicked() instanceof Player player) {
@@ -43,9 +59,9 @@ public class WindowListeners<T> implements Listener {
                         final int windowCapacity = 45;
 
                         if (event.getSlot() < windowCapacity) {
-                            ApproveWindow approveWindow =
-                                    new ApproveWindow(event.getCurrentItem());
-                            approveWindow.ShowWindow(0, player);
+                            isClose = false;
+                            ApproveWindow approveWindow = new ApproveWindow(event.getCurrentItem());
+                            approveWindow.ShowWindow(0, player, true);
                         } else {
                             SwipePage(Integer.parseInt(Objects.requireNonNull
                                     (event.getCurrentItem()).getItemMeta().getDisplayName()), player, window);
@@ -54,12 +70,12 @@ public class WindowListeners<T> implements Listener {
                     }
 
                     case "Покупка" -> {
-                        final int acceptIndex = 5;
-
+                        final int acceptIndex = 0;
                         if (event.getSlot() >= acceptIndex) {
                             moneyTransfer.BuyItem(pluginManager.GetPlayerData(player.getName(), xConomyAPI), shop.shopList.get(itemPosition).UniqId);
                             event.getInventory().setItem(itemPosition, null);
                         }
+                        isClose = false;
                         pluginManager.GetDefaultWindow(player, shop);
                         event.setCancelled(true);
                     }
@@ -84,9 +100,10 @@ public class WindowListeners<T> implements Listener {
         if (window == null) return;
 
         if (window instanceof ShopWindow tempWindow) {
-            tempWindow.ShowWindow(page, player);
+            tempWindow.ShowWindow(page, player, false);
         } else if (window instanceof ExpiredWindow tempWindow) {
-            tempWindow.ShowWindow(page, player);
+            tempWindow.ShowWindow(page, player, false);
         }
     }
+
 }

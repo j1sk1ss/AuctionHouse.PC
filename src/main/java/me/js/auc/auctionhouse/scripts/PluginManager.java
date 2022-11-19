@@ -11,7 +11,7 @@ public class PluginManager {
     public void GetDefaultWindow(Player player, Shop shop) {
         player.closeInventory();
         ShopWindow shopWindow = new ShopWindow(54, "Рынок", shop);
-        shopWindow.ShowWindow(0, player);
+        shopWindow.ShowWindow(0, player, true);
     }
 
     public PlayerData GetPlayerData(String playerName, XConomyAPI xConomyAPI) {
