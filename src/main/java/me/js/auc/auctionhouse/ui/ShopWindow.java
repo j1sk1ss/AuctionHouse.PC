@@ -12,44 +12,34 @@ import org.bukkit.event.Listener;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-public class ShopWindow implements Listener, IWindow {
+public class ShopWindow implements Listener, IWindow<ShopWindow> {
     public ShopWindow(Integer size, String name, Shop shopList) {
         shopWindow = Bukkit.createInventory(null, size, name);
         this.shopList = shopList;
     }
     private final Inventory shopWindow;
     private final Shop shopList;
+    final Integer PageCapacity = 45;
+    @Override
     public void ShowWindow(Integer window, Player player) {
         shopWindow.clear();
-        FillWindow(window * shopWindow.getSize(), window);
+        FillWindow(window * PageCapacity, window);
         player.openInventory(shopWindow);
     }
-
-    @Override
-    public ShopWindow GetShopWindow() {
-        return this;
-    }
-
-    @Override
-    public ExpiredWindow GetExpiredWindow() {
-        return null;
-    }
-
     private void FillWindow(Integer startIndex, Integer indexWindow) {
         ItemWorker itemWorker = new ItemWorker();
-        int itemsOnPage = Math.min(shopWindow.getSize(), shopList.shopList.size() - startIndex);
 
-        final int PageCapacity = 41;
-        int count = Math.min(itemsOnPage, PageCapacity);
-        for (int i = startIndex; i < count; i++) {
+        for (int i = startIndex; i < PageCapacity * (indexWindow + 1); i++) {
+
+            if (shopList.shopList.size() <= i) break;
+
             Item chosenItem = shopList.shopList.get(i);
             ItemStack tempItem = chosenItem.Item;
-
             tempItem = itemWorker.SetLore(tempItem, "Цена: " +
-                    chosenItem.Price + "\nВладелец: " + chosenItem.Owner.getName() +
-                    "\nСрок: " + chosenItem.ticks);
+                    chosenItem.Price + "₽" + "\nВладелец: " + chosenItem.Owner.getName() +
+                    "\nСрок: " + chosenItem.expiredDelay);
 
-            shopWindow.setItem(i, tempItem);
+            shopWindow.setItem(i - startIndex, tempItem);
         }
 
         ItemStack itemStack = itemWorker.SetName(new ItemStack(Material.ACACIA_BOAT), indexWindow - 1 + "");
@@ -57,5 +47,9 @@ public class ShopWindow implements Listener, IWindow {
 
         itemStack = itemWorker.SetName(new ItemStack(Material.ACACIA_BOAT), indexWindow + 1 + "");
         shopWindow.setItem(53, itemStack);
+    }
+    @Override
+    public ShopWindow GetWindow() {
+        return this;
     }
 }

@@ -8,7 +8,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-public class ApproveWindow implements IWindow {
+public class ApproveWindow implements IWindow<ApproveWindow> {
 
     public ApproveWindow(ItemStack chosenItem) {
         this.chosenItem = chosenItem;
@@ -38,12 +38,7 @@ public class ApproveWindow implements IWindow {
     }
 
     @Override
-    public ShopWindow GetShopWindow() {
-        return null;
-    }
-
-    @Override
-    public ExpiredWindow GetExpiredWindow() {
-        return null;
+    public ApproveWindow GetWindow() {
+        return this;
     }
 }

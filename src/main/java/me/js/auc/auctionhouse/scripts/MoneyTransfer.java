@@ -4,6 +4,7 @@ import me.js.auc.auctionhouse.lists.Shop;
 import me.js.auc.auctionhouse.object.Item;
 import me.yic.xconomy.api.XConomyAPI;
 import me.yic.xconomy.data.syncdata.PlayerData;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -34,6 +35,9 @@ public class MoneyTransfer {
 
             Player player = getPlayerByUuid(buyer.getUniqueId());
             player.getInventory().addItem(item.Item);
+
+            Objects.requireNonNull(Bukkit.getPlayer(item.Owner.getUniqueId())).sendMessage("Продан предмет: "
+                    + item.Item.getI18NDisplayName() + ". За: " + item.Price + "₽");
 
             ChangeBalance(buyer, item.Price, false);
             ChangeBalance(item.Owner, item.Price, true);

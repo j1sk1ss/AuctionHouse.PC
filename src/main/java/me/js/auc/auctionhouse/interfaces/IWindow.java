@@ -4,8 +4,7 @@ import me.js.auc.auctionhouse.ui.ExpiredWindow;
 import me.js.auc.auctionhouse.ui.ShopWindow;
 import org.bukkit.entity.Player;
 
-public interface IWindow {
+public interface IWindow<T> {
     public void ShowWindow(Integer window, Player player);
-    public ShopWindow GetShopWindow();
-    public ExpiredWindow GetExpiredWindow();
+    public T GetWindow();
 }

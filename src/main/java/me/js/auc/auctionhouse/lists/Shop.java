@@ -1,7 +1,6 @@
 package me.js.auc.auctionhouse.lists;
 
 import me.js.auc.auctionhouse.object.Item;
-import org.bukkit.Bukkit;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +15,7 @@ public class Shop {
     public void TimeDecrease() {
         for (int i = 0; i < shopList.size(); i++) {
             Item item = shopList.get(i);
-            item.ticks -= 10;
+            item.expiredDelay -= 10;
             if (!isExpired(item)) continue;
             Expired tempExpired = PlayerExpired(item);
                 tempExpired.expiredList.add(item);
@@ -24,7 +23,7 @@ public class Shop {
             shopList.remove(i);
         }
     }
-    private Boolean isExpired(Item item) { return item.ticks < 0; }
+    private Boolean isExpired(Item item) { return item.expiredDelay < 0; }
     private Expired PlayerExpired(Item item) {
         for (Expired elem:expireds) {
             if (item.Owner.equals(elem.Owner)) return elem;

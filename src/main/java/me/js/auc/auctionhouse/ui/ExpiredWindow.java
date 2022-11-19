@@ -12,7 +12,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-public class ExpiredWindow implements IWindow {
+public class ExpiredWindow implements IWindow<ExpiredWindow> {
     public ExpiredWindow(Integer size, String name, Shop shop, PlayerData playerData) {
         this.playerData = playerData;
         this.shop = shop;
@@ -21,19 +21,12 @@ public class ExpiredWindow implements IWindow {
     private final PlayerData playerData;
     private final Shop shop;
     private final Inventory expiredWindow;
+    final Integer PageCapacity = 45;
     @Override
     public void ShowWindow(Integer window, Player player) {
         expiredWindow.clear();
-        FillWindow(window * expiredWindow.getSize(), window);
+        FillWindow(window * PageCapacity, window);
         player.openInventory(expiredWindow);
-    }
-    @Override
-    public ShopWindow GetShopWindow() {
-        return null;
-    }
-    @Override
-    public ExpiredWindow GetExpiredWindow() {
-        return this;
     }
     private void FillWindow(Integer startIndex, Integer indexWindow) {
         ItemWorker itemWorker = new ItemWorker();
@@ -50,23 +43,28 @@ public class ExpiredWindow implements IWindow {
 
         int itemsOnPage = Math.min(expiredWindow.getSize(), expired.expiredList.size() - startIndex);
 
-        final int PageCapacity = 41;
         int count = Math.min(itemsOnPage, PageCapacity);
 
-        for (int i = startIndex; i < count; i++) {
+        for (int i = startIndex; i < PageCapacity * (indexWindow + 1); i++) {
+
+            if (expired.expiredList.size() <= i) break;
+
             Item chosenItem = expired.expiredList.get(i);
             ItemStack tempItem = chosenItem.Item;
-
             tempItem = itemWorker.SetLore(tempItem, "Цена: " + chosenItem.Price);
 
-            expiredWindow.setItem(i, tempItem);
+            expiredWindow.setItem(i - startIndex, tempItem);
         }
     }
-
+    public void TakeItem(Integer position) {expiredWindow.setItem(position, null);}
     private Expired getExpired() {
         for (Expired item : shop.expireds) {
             if (item.Owner.equals(playerData)) return item;
         }
         return null;
+    }
+    @Override
+    public ExpiredWindow GetWindow() {
+        return this;
     }
 }

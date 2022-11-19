@@ -9,10 +9,12 @@ import me.js.auc.auctionhouse.ui.ShopWindow;
 import me.yic.xconomy.api.XConomyAPI;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
@@ -44,7 +46,7 @@ public class CommandManager implements CommandExecutor {
         if (command.getName().equals("shop")) {
             ShopWindow shopWindow = new ShopWindow(54, "Рынок", shop);
 
-            WindowListeners windowListeners = new WindowListeners(moneyTransfer, xConomyAPI, shop, shopWindow, player);
+            WindowListeners<ShopWindow> windowListeners = new WindowListeners<>(moneyTransfer, xConomyAPI, shop, shopWindow, player);
             Bukkit.getPluginManager().registerEvents(windowListeners, plugin);
 
             shopWindow.ShowWindow(0, player);
@@ -52,15 +54,25 @@ public class CommandManager implements CommandExecutor {
 
         if (command.getName().equals("sell")) {
             final int costArg = 1;
+            ItemStack sellingItem = player.getInventory().getItemInMainHand();
+
+            if (sellingItem.getType() == Material.AIR) {
+                player.sendMessage("Рука пуста!");
+                return true;
+            }
+
             moneyTransfer.SellItem(Double.parseDouble(args[costArg]), xConomyAPI.getPlayerData(player.getUniqueId()),
-                    player.getInventory().getItemInMainHand());
+                    sellingItem);
+
+            player.sendMessage("Предмет: " + sellingItem.getI18NDisplayName() +
+                    ". Выставлен на торговую площадку за: " + args[costArg]+ "₽");
             player.getInventory().setItemInMainHand(null);
         }
 
         if (command.getName().equals("expired")) {
             ExpiredWindow expiredWindow = new ExpiredWindow(54, "Просрочка", shop, xConomyAPI.getPlayerData(player.getUniqueId()));
 
-            WindowListeners windowListeners = new WindowListeners(moneyTransfer, xConomyAPI, shop, expiredWindow, player);
+            WindowListeners<ExpiredWindow> windowListeners = new WindowListeners<>(moneyTransfer, xConomyAPI, shop, expiredWindow, player);
             Bukkit.getPluginManager().registerEvents(windowListeners, plugin);
 
             expiredWindow.ShowWindow(0, player);
