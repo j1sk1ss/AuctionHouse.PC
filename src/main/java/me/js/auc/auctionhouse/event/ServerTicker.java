@@ -3,7 +3,6 @@ import me.js.auc.auctionhouse.lists.Shop;
 
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
-import org.bukkit.scheduler.BukkitTask;
 
 public class ServerTicker {
     public ServerTicker(Plugin plugin, Shop shop) {
@@ -11,6 +10,6 @@ public class ServerTicker {
             public void run() {
                 shop.TimeDecrease();
             }
-        }, 0L, 1L);
+        }, 1L, 50L);
     }
 }

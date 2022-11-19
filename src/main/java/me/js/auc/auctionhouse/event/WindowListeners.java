@@ -7,25 +7,27 @@ import me.js.auc.auctionhouse.ui.ExpiredWindow;
 import me.js.auc.auctionhouse.ui.ShopWindow;
 import me.yic.xconomy.api.XConomyAPI;
 
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.Plugin;
 
 import java.util.Objects;
 
 public class WindowListeners<T> implements Listener {
     public WindowListeners(MoneyTransfer moneyTransfer, XConomyAPI xConomyAPI, Shop shop, T window,
-                           Player owner) {
+                           Player owner, Plugin plugin) {
         this.moneyTransfer = moneyTransfer;
         this.xConomyAPI = xConomyAPI;
         this.shop = shop;
         this.owner = owner;
         this.window = window;
+        this.plugin = plugin;
     }
+    private Plugin plugin;
     private Player owner;
     private Shop shop;
     private MoneyTransfer moneyTransfer;
@@ -41,6 +43,7 @@ public class WindowListeners<T> implements Listener {
             xConomyAPI = null;
             pluginManager = null;
             shop = null;
+            plugin = null;
         } else {
             isClose = true;
         }
@@ -76,7 +79,7 @@ public class WindowListeners<T> implements Listener {
                             event.getInventory().setItem(itemPosition, null);
                         }
                         isClose = false;
-                        pluginManager.GetDefaultWindow(player, shop);
+                        pluginManager.GetDefaultWindow(player, shop, plugin);
                         event.setCancelled(true);
                     }
 
@@ -84,7 +87,11 @@ public class WindowListeners<T> implements Listener {
                         final int windowCapacity = 45;
 
                         if (event.getSlot() < windowCapacity) {
-                            player.getInventory().addItem(Objects.requireNonNull(event.getInventory().getItem(itemPosition)));
+
+                            ItemStack itemStack = event.getInventory().getItem(itemPosition);
+
+                            assert itemStack != null;
+                            player.getInventory().addItem(new ItemStack(itemStack.getType(), itemStack.getAmount()));
                             event.getInventory().setItem(itemPosition, null);
                         } else {
                             SwipePage(Integer.parseInt(Objects.requireNonNull
@@ -96,6 +103,7 @@ public class WindowListeners<T> implements Listener {
             }
         }
     }
+
     private void SwipePage(Integer page, Player player, T window) {
         if (window == null) return;
 

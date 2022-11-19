@@ -7,8 +7,10 @@ import me.yic.xconomy.data.syncdata.PlayerData;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.math.BigDecimal;
+import java.util.Collections;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -30,11 +32,13 @@ public class MoneyTransfer {
             Item item = shop.shopList.get(i);
 
             if (!Objects.equals(uniqId, item.UniqId)) continue;
-            if (buyer.getBalance().doubleValue() < item.Price) continue;
+            if (buyer.getBalance().doubleValue() < item.Price) break;
+
             shop.shopList.remove(i);
 
             Player player = getPlayerByUuid(buyer.getUniqueId());
-            player.getInventory().addItem(item.Item);
+
+            player.getInventory().addItem(new ItemStack(item.Item.getType(), item.Item.getAmount()));
 
             Objects.requireNonNull(Bukkit.getPlayer(item.Owner.getUniqueId())).sendMessage("Продан предмет: "
                     + item.Item.getI18NDisplayName() + ". За: " + item.Price + "₽");

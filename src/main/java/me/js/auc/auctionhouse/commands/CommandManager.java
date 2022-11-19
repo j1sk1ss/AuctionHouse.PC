@@ -1,7 +1,6 @@
 package me.js.auc.auctionhouse.commands;
 
 import me.js.auc.auctionhouse.event.WindowListeners;
-import me.js.auc.auctionhouse.lists.Expired;
 import me.js.auc.auctionhouse.lists.Shop;
 import me.js.auc.auctionhouse.scripts.MoneyTransfer;
 import me.js.auc.auctionhouse.ui.ExpiredWindow;
@@ -44,9 +43,10 @@ public class CommandManager implements CommandExecutor {
         }
 
         if (command.getName().equals("shop")) {
-            ShopWindow shopWindow = new ShopWindow(54, "Рынок", shop);
+            ShopWindow shopWindow = new ShopWindow(54, "Рынок", shop, plugin);
 
-            WindowListeners<ShopWindow> windowListeners = new WindowListeners<>(moneyTransfer, xConomyAPI, shop, shopWindow, player);
+            WindowListeners<ShopWindow> windowListeners = new WindowListeners<>
+                    (moneyTransfer, xConomyAPI, shop, shopWindow, player, plugin);
             Bukkit.getPluginManager().registerEvents(windowListeners, plugin);
 
             shopWindow.ShowWindow(0, player, true);
@@ -72,7 +72,8 @@ public class CommandManager implements CommandExecutor {
         if (command.getName().equals("expired")) {
             ExpiredWindow expiredWindow = new ExpiredWindow(54, "Просрочка", shop, xConomyAPI.getPlayerData(player.getUniqueId()));
 
-            WindowListeners<ExpiredWindow> windowListeners = new WindowListeners<>(moneyTransfer, xConomyAPI, shop, expiredWindow, player);
+            WindowListeners<ExpiredWindow> windowListeners = new WindowListeners<>
+                    (moneyTransfer, xConomyAPI, shop, expiredWindow, player, plugin);
             Bukkit.getPluginManager().registerEvents(windowListeners, plugin);
 
             expiredWindow.ShowWindow(0, player, true);

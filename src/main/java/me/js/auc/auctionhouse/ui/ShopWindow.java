@@ -12,22 +12,37 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.scheduler.BukkitTask;
 
 public class ShopWindow implements Listener, IWindow<ShopWindow> {
-    public ShopWindow(Integer size, String name, Shop shopList) {
+    public ShopWindow(Integer size, String name, Shop shopList, Plugin plugin) {
         shopWindow = Bukkit.createInventory(null, size, name);
         this.shopList = shopList;
+        this.plugin = plugin;
     }
+    private final Plugin plugin;
     private final Inventory shopWindow;
     private final Shop shopList;
     final Integer PageCapacity = 45;
+    int tasked = 9;
     @Override
     public void ShowWindow(Integer window, Player player, Boolean open) {
-        shopWindow.clear();
-        FillWindow(window * PageCapacity, window);
         if (open) player.openInventory(shopWindow);
+
+        FillWindow(window * PageCapacity, window);
+
+        Bukkit.getServer().getScheduler().cancelTask(tasked);
+        tasked = Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable(){
+            public void run() {
+                FillWindow(window * PageCapacity, window);
+            }
+        }, 1L, 50L);
+        player.sendMessage(tasked + "");
     }
-    private void FillWindow(Integer startIndex, Integer indexWindow) {
+    public void FillWindow(Integer startIndex, Integer indexWindow) {
+
+        shopWindow.clear();
         ItemWorker itemWorker = new ItemWorker();
 
         for (int i = startIndex; i < PageCapacity * (indexWindow + 1); i++) {
@@ -40,7 +55,7 @@ public class ShopWindow implements Listener, IWindow<ShopWindow> {
                     "Цена: " + chosenItem.Price + "₽" +
                     "\nЦена за еденицу: " + (chosenItem.Price/chosenItem.Item.getAmount())+ "₽" +
                     "\nВладелец: " + chosenItem.Owner.getName() +
-                    "\nСрок: " + chosenItem.expiredDelay);
+                    "\nСрок: " + chosenItem.expiredDelay + " тик");
 
             shopWindow.setItem(i - startIndex, tempItem);
         }
