@@ -1,7 +1,9 @@
 package me.js.auc.auctionhouse.scripts;
 
+import me.js.auc.auctionhouse.event.WindowListeners;
 import me.js.auc.auctionhouse.lists.Shop;
 import me.js.auc.auctionhouse.object.Item;
+import me.js.auc.auctionhouse.ui.ShopWindow;
 import me.yic.xconomy.api.XConomyAPI;
 import me.yic.xconomy.data.syncdata.PlayerData;
 import org.bukkit.Bukkit;
@@ -10,31 +12,28 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.math.BigDecimal;
-import java.util.Collections;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 import static org.bukkit.Bukkit.getServer;
 
-public class MoneyTransfer {
+public class MoneyTransfer<T> {
     public MoneyTransfer(Shop shop, XConomyAPI xConomyAPI) {
-        this.shop = shop;
         this.xConomyAPI = xConomyAPI;
     }
-    private final Shop shop;
     private final XConomyAPI xConomyAPI;
-    public void SellItem(Double price, PlayerData player, ItemStack item) {
+    public void SellItem(Double price, PlayerData player, ItemStack item, Shop shop) {
         Item sellItem = new Item(item, price, player);
         shop.shopList.add(sellItem);
     }
-    public void BuyItem(PlayerData buyer, UUID uniqId) {
-        for (int i = 0; i < shop.shopList.size(); i++) {
-            Item item = shop.shopList.get(i);
+    public void BuyItem(PlayerData buyer, UUID uniqId, T cls, Shop shop) {
+        List<Item> shopList = ((ShopWindow) cls).shopList;
+        for (int i = 0; i < shopList.size(); i++) {
+            Item item = shopList.get(i);
 
             if (!Objects.equals(uniqId, item.UniqId)) continue;
             if (buyer.getBalance().doubleValue() < item.Price) break;
 
-            shop.shopList.remove(i);
+            shopList.remove(i);
 
             Player player = getPlayerByUuid(buyer.getUniqueId());
 
@@ -47,6 +46,8 @@ public class MoneyTransfer {
             ChangeBalance(item.Owner, item.Price, true);
             break;
         }
+        ((ShopWindow) cls).shopList = new ArrayList<Item>(shopList);
+        shop.shopList = new ArrayList<>(shopList);
     }
     private void ChangeBalance(PlayerData player, Double amount, Boolean isAdd) {
         xConomyAPI.changePlayerBalance(player.getUniqueId(), player.getName(), new BigDecimal(amount), isAdd);

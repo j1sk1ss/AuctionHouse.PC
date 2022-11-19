@@ -3,7 +3,6 @@ package me.js.auc.auctionhouse;
 import java.util.Objects;
 
 import me.js.auc.auctionhouse.event.ServerTicker;
-import me.js.auc.auctionhouse.lists.Expired;
 import me.js.auc.auctionhouse.lists.Shop;
 import me.js.auc.auctionhouse.commands.CommandManager;
 
@@ -25,7 +24,6 @@ public final class AuctionHouse extends JavaPlugin {
         Objects.requireNonNull(getCommand("shop")).setExecutor(commandManager);
         Objects.requireNonNull(getCommand("sell")).setExecutor(commandManager);
         Objects.requireNonNull(getCommand("expired")).setExecutor(commandManager);
-
     }
     @Override
     public void onDisable() {

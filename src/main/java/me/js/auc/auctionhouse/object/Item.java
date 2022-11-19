@@ -13,7 +13,7 @@ public class Item {
         Price = price;
         UniqId = UUID.randomUUID();
     }
-    public Integer expiredDelay = 1000;
+    public Integer expiredDelay = 10000;
     public ItemStack Item;
     public Double Price;
     public PlayerData Owner;
