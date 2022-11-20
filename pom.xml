@@ -79,6 +79,10 @@
             <url>https://maven.citizensnpcs.co/repo</url>
         </repository>
 
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -111,5 +115,17 @@
             <scope>provided</scope>
         </dependency>
 
+        <dependency>
+            <groupId>org.codehaus.jackson</groupId>
+            <artifactId>jackson-mapper-asl</artifactId>
+            <version>1.9.13</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.github.KodySimpson</groupId>
+            <artifactId>SimpAPI</artifactId>
+            <version>4.3.2</version>
+        </dependency>
     </dependencies>
 </project>
