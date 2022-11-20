@@ -20,16 +20,12 @@ public class ApproveWindow implements IWindow<ApproveWindow> {
         ItemWorker itemWorker = new ItemWorker();
 
         ItemStack tempBlock = itemWorker.SetName(new ItemStack(Material.RED_STAINED_GLASS_PANE), "ОТМЕНА");
-        approveWindow.setItem(0, tempBlock);
-        approveWindow.setItem(1, tempBlock);
-        approveWindow.setItem(2, tempBlock);
+        for (int i = 0; i < 3; i++) approveWindow.setItem(i, tempBlock);
 
         approveWindow.setItem(4, chosenItem);
 
         tempBlock = itemWorker.SetName(new ItemStack(Material.GREEN_STAINED_GLASS_PANE), "КУПИТЬ");
-        approveWindow.setItem(6, tempBlock);
-        approveWindow.setItem(7, tempBlock);
-        approveWindow.setItem(8, tempBlock);
+        for (int i = 6; i < 9; i++) approveWindow.setItem(i, tempBlock);
     }
     public void ShowWindow(Integer window, Player player, Boolean open) {
         approveWindow = Bukkit.createInventory(player, 9, "Покупка");

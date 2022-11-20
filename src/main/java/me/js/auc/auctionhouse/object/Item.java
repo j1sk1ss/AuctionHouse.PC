@@ -6,7 +6,6 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.UUID;
 
-
 public class Item {
     public Item(ItemStack itemStack, Double price, PlayerData owner) {
         Owner = owner;

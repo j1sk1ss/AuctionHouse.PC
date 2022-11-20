@@ -1,15 +1,13 @@
 package me.js.auc.auctionhouse.scripts;
 
-import me.js.auc.auctionhouse.event.WindowListeners;
 import me.js.auc.auctionhouse.lists.Shop;
 import me.js.auc.auctionhouse.object.Item;
-import me.js.auc.auctionhouse.ui.ShopWindow;
 import me.yic.xconomy.api.XConomyAPI;
 import me.yic.xconomy.data.syncdata.PlayerData;
+
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
 import java.math.BigDecimal;
 import java.util.*;

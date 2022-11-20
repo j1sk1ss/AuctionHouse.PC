@@ -18,6 +18,7 @@ public class Shop {
             Item item = shopList.get(i);
             item.expiredDelay -= 10;
             if (!isExpired(item)) continue;
+
             Expired tempExpired = PlayerExpired(item.Owner);
                 tempExpired.expiredItems.add(item);
                 playerExpireds.add(tempExpired);

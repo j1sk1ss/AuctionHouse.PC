@@ -48,6 +48,7 @@ public class WindowListeners<T> implements Listener {
             switch (event.getView().getTitle()) {
                 case "Рынок" -> {
                     if (clickPosition < windowCapacity) {
+
                         isClose = false;
                         ApproveWindow approveWindow = new ApproveWindow(event.getCurrentItem());
                         approveWindow.ShowWindow(0, player, true);

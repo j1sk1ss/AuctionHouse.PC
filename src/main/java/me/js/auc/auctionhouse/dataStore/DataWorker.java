@@ -10,18 +10,14 @@ public class DataWorker {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             objectMapper.writeValue(new File("market.json"), shop);
-        } catch (Exception exception) {
-            System.out.println(exception);
-        }
+        } catch (Exception ignored) {}
     }
     public Shop GetData(String jsonData) {
         ObjectMapper objectMapper = new ObjectMapper();
         Shop shop = new Shop();
         try {
             shop = objectMapper.readValue(jsonData, Shop.class);
-        } catch (Exception exception) {
-            System.out.println(exception);
-        }
+        } catch (Exception ignored) {}
         return shop;
     }
 }

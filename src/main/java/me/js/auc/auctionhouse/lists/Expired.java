@@ -9,7 +9,7 @@ import java.util.List;
 public class Expired {
     public Expired(PlayerData owner) {
         Owner = owner;
-        expiredItems = new ArrayList<Item>();
+        expiredItems = new ArrayList<>();
     }
     public PlayerData Owner;
     public List<Item> expiredItems;
