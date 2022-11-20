@@ -5,56 +5,33 @@ import me.js.auc.auctionhouse.lists.Shop;
 import me.js.auc.auctionhouse.object.Item;
 import me.js.auc.auctionhouse.scripts.ItemWorker;
 
+import me.js.auc.auctionhouse.scripts.Sorting;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class ShopWindow implements Listener, IWindow<ShopWindow> {
-    public ShopWindow(Integer size, String name, Shop shopList, Plugin plugin) {
+    public ShopWindow(Integer size, String name, Shop shop, Plugin plugin) {
         shopWindow = Bukkit.createInventory(null, size, name);
-        this.shopList = shopList.shopList;
+        this.shop = shop;
         this.plugin = plugin;
     }
     private final Plugin plugin;
     private final Inventory shopWindow;
-    public List<Item> shopList;
+    public Shop shop;
     final Integer PageCapacity = 45;
     int tasked = 9;
-    public void TimeSort(Boolean Biggest) {
-        int temp = Biggest ? 1 : -1;
-        List<Item> tempList = new ArrayList<Item>(shopList);
-        for (int i = 0; i < tempList.size(); i++) {
-            for (int j = 0; j < tempList.size() - 1; j++) {
-                if (tempList.get(j).expiredDelay * temp < tempList.get(j+1).expiredDelay * temp) {
-                    Item tempItem = tempList.get(j);
-                    tempList.set(j, tempList.get(j+1));
-                    tempList.set(j + 1, tempItem);
-                }
-            }
-        }
-        shopList = new ArrayList<Item>(tempList);
+    public void TimeSort(boolean Biggest) {
+        shop.shopList = new Sorting().TimeSort(Biggest, shop.shopList);
     }
-    public void PriceSort(Boolean Biggest) {
-        int temp = Biggest ? 1 : -1;
-        List<Item> tempList = new ArrayList<Item>(shopList);
-        for (int i = 0; i < tempList.size(); i++) {
-            for (int j = 0; j < tempList.size() - 1; j++) {
-                if (tempList.get(j).Price * temp < tempList.get(j+1).Price * temp) {
-                    Item tempItem = tempList.get(j);
-                    tempList.set(j, tempList.get(j+1));
-                    tempList.set(j + 1, tempItem);
-                }
-            }
-        }
-        shopList = new ArrayList<Item>(tempList);
+    public void PriceSort(boolean Biggest) {
+        shop.shopList = new Sorting().PriceSort(Biggest, shop.shopList);
     }
     @Override
     public void ShowWindow(Integer window, Player player, Boolean open) {
@@ -68,17 +45,17 @@ public class ShopWindow implements Listener, IWindow<ShopWindow> {
             }
         }, 1L, 1L);
     }
-    public void FillWindow(Integer startIndex, Integer indexWindow) {
+    public void FillWindow(int startIndex, int indexWindow) {
         shopWindow.clear();
         ItemWorker itemWorker = new ItemWorker();
 
         for (int i = startIndex; i < PageCapacity * (indexWindow + 1); i++) {
-            if (shopList.size() <= i) break;
-            Item chosenItem = shopList.get(i);
+            if (shop.shopList.size() <= i) break;
+            Item chosenItem = shop.shopList.get(i);
             ItemStack tempItem = chosenItem.Item;
             tempItem = itemWorker.SetLore(tempItem,
                     "Цена: " + chosenItem.Price + "₽" +
-                    "\nЦена за еденицу: " + String.format("%.3f",(chosenItem.Price/chosenItem.Item.getAmount()))+ "₽" +
+                    "\nЦена за еденицу: " + String.format("%.1f",(chosenItem.Price/chosenItem.Item.getAmount()))+ "₽" +
                     "\nВладелец: " + chosenItem.Owner.getName() +
                     "\nСрок: " + chosenItem.expiredDelay + " тик");
             shopWindow.setItem(i - startIndex, tempItem);

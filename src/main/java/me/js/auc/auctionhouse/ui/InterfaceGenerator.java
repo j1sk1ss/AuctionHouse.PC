@@ -15,7 +15,7 @@ public class InterfaceGenerator {
 
         ItemStack itemStack = itemWorker.SetName(new ItemStack(Material.ACACIA_BOAT), indexWindow - 1 + "");
 
-        window.setItem(prevWindow, itemStack);
+        if (indexWindow - 1 >= 0) window.setItem(prevWindow, itemStack);
 
         itemStack = itemWorker.SetName(new ItemStack(Material.ACACIA_SIGN), "Самые новые:");
         window.setItem(46, itemStack);

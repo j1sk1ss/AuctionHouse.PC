@@ -41,4 +41,9 @@ public class ApproveWindow implements IWindow<ApproveWindow> {
     public ApproveWindow GetWindow() {
         return this;
     }
+
+    @Override
+    public void PriceSort(boolean Biggest) {}
+    @Override
+    public void TimeSort(boolean Biggest) {}
 }

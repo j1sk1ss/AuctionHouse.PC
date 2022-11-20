@@ -1,10 +1,10 @@
 package me.js.auc.auctionhouse.ui;
 
 import me.js.auc.auctionhouse.interfaces.IWindow;
-import me.js.auc.auctionhouse.lists.Expired;
 import me.js.auc.auctionhouse.lists.Shop;
 import me.js.auc.auctionhouse.object.Item;
 import me.js.auc.auctionhouse.scripts.ItemWorker;
+import me.js.auc.auctionhouse.scripts.Sorting;
 import me.yic.xconomy.data.syncdata.PlayerData;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -25,38 +25,20 @@ public class ExpiredWindow implements IWindow<ExpiredWindow> {
     }
     private final PlayerData playerData;
     private final Shop shop;
-    public List<Item> expiredItems;
+    private List<Item> expiredItems;
     private final Inventory expiredWindow;
     private final Integer PageCapacity = 45;
     public void TimeSort(boolean Biggest) {
-        int temp = Biggest ? 1 : -1;
-        List<Item> tempList = new ArrayList<Item>(shop.PlayerExpired(playerData).expiredItems);
-        for (int i = 0; i < tempList.size(); i++) {
-            for (int j = 0; j < tempList.size() - 1; j++) {
-                if (tempList.get(j).expiredDelay * temp < tempList.get(j+1).expiredDelay * temp) {
-                    Item tempItem = tempList.get(j);
-                    tempList.set(j, tempList.get(j+1));
-                    tempList.set(j + 1, tempItem);
-                }
-            }
-        }
-        shop.PlayerExpired(playerData).expiredItems = new ArrayList<Item>(tempList);
-        expiredItems = new ArrayList<Item>(tempList);
+        shop.PlayerExpired(playerData).expiredItems = new ArrayList<Item>(
+                new Sorting().TimeSort(Biggest, expiredItems)
+        );
+        UpdateLocalList();
     }
     public void PriceSort(boolean Biggest) {
-        int temp = Biggest ? 1 : -1;
-        List<Item> tempList = new ArrayList<Item>(shop.PlayerExpired(playerData).expiredItems);
-        for (int i = 0; i < tempList.size(); i++) {
-            for (int j = 0; j < tempList.size() - 1; j++) {
-                if (tempList.get(j).Price * temp < tempList.get(j+1).Price * temp) {
-                    Item tempItem = tempList.get(j);
-                    tempList.set(j, tempList.get(j+1));
-                    tempList.set(j + 1, tempItem);
-                }
-            }
-        }
-        shop.PlayerExpired(playerData).expiredItems = new ArrayList<Item>(tempList);
-        expiredItems = new ArrayList<Item>(tempList);
+        shop.PlayerExpired(playerData).expiredItems = new ArrayList<Item>(
+                new Sorting().PriceSort(Biggest, expiredItems)
+        );
+        UpdateLocalList();
     }
     @Override
     public void ShowWindow(Integer window, Player player, Boolean open) {
@@ -64,7 +46,7 @@ public class ExpiredWindow implements IWindow<ExpiredWindow> {
         FillWindow(window * PageCapacity, window);
         if (open) player.openInventory(expiredWindow);
     }
-    private void FillWindow(Integer startIndex, Integer indexWindow) {
+    private void FillWindow(int startIndex, int indexWindow) {
         ItemWorker itemWorker = new ItemWorker();
         List<Integer> positions = Arrays.asList(45, 53);
         new InterfaceGenerator().SetUserInterface(expiredWindow, itemWorker, indexWindow, positions);
@@ -76,9 +58,12 @@ public class ExpiredWindow implements IWindow<ExpiredWindow> {
             expiredWindow.setItem(i - startIndex, tempItem);
         }
     }
+    private void UpdateLocalList() {
+        expiredItems = shop.PlayerExpired(playerData).expiredItems;
+    }
     public void TakeItem(int position) {
         shop.PlayerExpired(playerData).expiredItems.remove(position);
-        expiredItems = shop.PlayerExpired(playerData).expiredItems;
+        UpdateLocalList();
     }
     @Override
     public ExpiredWindow GetWindow() {

@@ -1,5 +1,5 @@
 package me.js.auc.auctionhouse.event;
-import me.js.auc.auctionhouse.object.Item;
+import me.js.auc.auctionhouse.interfaces.IWindow;
 import me.js.auc.auctionhouse.scripts.PluginManager;
 import me.js.auc.auctionhouse.lists.Shop;
 import me.js.auc.auctionhouse.scripts.MoneyTransfer;
@@ -15,14 +15,11 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.Plugin;
 
 import java.util.ArrayList;
-import java.util.Objects;
-import java.util.UUID;
 
 public class WindowListeners<T> implements Listener {
-    public WindowListeners(MoneyTransfer<T> moneyTransfer, XConomyAPI xConomyAPI, Shop shop, T window,
+    public WindowListeners(MoneyTransfer moneyTransfer, XConomyAPI xConomyAPI, Shop shop, T window,
                            Player owner) {
         this.moneyTransfer = moneyTransfer;
         this.xConomyAPI = xConomyAPI;
@@ -30,22 +27,23 @@ public class WindowListeners<T> implements Listener {
         this.owner = owner;
         this.window = window;
     }
+    private T window;
     private Player owner;
-    public Shop shop;
-    private MoneyTransfer<T> moneyTransfer;
+    private Shop shop;
+    private MoneyTransfer moneyTransfer;
     private XConomyAPI xConomyAPI;
     private PluginManager pluginManager = new PluginManager();
-    private final T window;
     private Boolean isClose = false;
     private Integer clickPosition = 0;
     @EventHandler
     public void onClick(InventoryClickEvent event) {
         if (event.getWhoClicked() instanceof Player player) {
-            if (player != owner || !event.isLeftClick() || event.getCurrentItem() == null) return;
-            Inventory thisInventory = event.getInventory();
             final int windowCapacity = 45;
 
+            if (player != owner || !event.isLeftClick() || event.getCurrentItem() == null) return;
             if (!event.getView().getTitle().equals("Покупка")) clickPosition = event.getSlot();
+
+            Inventory thisInventory = event.getInventory();
 
             switch (event.getView().getTitle()) {
                 case "Рынок" -> {
@@ -57,14 +55,9 @@ public class WindowListeners<T> implements Listener {
                         ShopWindow tempWindow = (ShopWindow)window;
                         if (clickPosition == 45 || clickPosition == 53) {
                             SwipePage(Integer.parseInt(event.getCurrentItem().getItemMeta().getDisplayName()), player, window);
-                            tempWindow.shopList = new ArrayList<>(shop.shopList);
+                            tempWindow.shop.shopList = new ArrayList<>(shop.shopList);
                         }
-                        switch (clickPosition) {
-                            case 48 -> tempWindow.PriceSort(true);
-                            case 49 -> tempWindow.PriceSort(false);
-                            case 46 -> tempWindow.TimeSort(true);
-                            case 47 -> tempWindow.TimeSort(false);
-                        }
+                        SortPage(tempWindow, clickPosition);
                     }
                     event.setCancelled(true);
                 }
@@ -72,7 +65,8 @@ public class WindowListeners<T> implements Listener {
                     final int cancelPosition = 5;
                     if (event.getSlot() >= cancelPosition) {
                         ShopWindow tempWindow = (ShopWindow)window;
-                        moneyTransfer.BuyItem(pluginManager.GetPlayerData(player.getName(), xConomyAPI), tempWindow.shopList.get(clickPosition).UniqId, window, shop);
+                        moneyTransfer.BuyItem(pluginManager.GetPlayerData(player.getName(), xConomyAPI),
+                                tempWindow.shop.shopList.get(clickPosition).UniqId, shop);
                     }
                     isClose = false;
 
@@ -93,21 +87,24 @@ public class WindowListeners<T> implements Listener {
 
                         SwipePage(0, player, window);
                     } else {
-                        ExpiredWindow tempWindow = (ExpiredWindow) window;
                         if (clickPosition == 45 || clickPosition == 53) {
                             SwipePage(Integer.parseInt(event.getCurrentItem().getItemMeta().getDisplayName()), player, window);
-                        }
-                        switch (clickPosition) {
-                            case 48 -> tempWindow.PriceSort(true);
-                            case 49 -> tempWindow.PriceSort(false);
-                            case 46 -> tempWindow.TimeSort(true);
-                            case 47 -> tempWindow.TimeSort(false);
+                        } else {
+                            SortPage(((ExpiredWindow)window), clickPosition);
+                            SwipePage(0, player, window);
                         }
                     }
-                    SwipePage(0, player, window);
                     event.setCancelled(true);
                 }
             }
+        }
+    }
+    private void SortPage(IWindow window, int clickPosition) {
+        switch (clickPosition) {
+            case 48 -> window.PriceSort(true);
+            case 49 -> window.PriceSort(false);
+            case 46 -> window.TimeSort(true);
+            case 47 -> window.TimeSort(false);
         }
     }
     private void SwipePage(Integer page, Player player, T window) {
@@ -127,6 +124,7 @@ public class WindowListeners<T> implements Listener {
             xConomyAPI = null;
             pluginManager = null;
             shop = null;
+            window = null;
         } else {
             isClose = true;
         }

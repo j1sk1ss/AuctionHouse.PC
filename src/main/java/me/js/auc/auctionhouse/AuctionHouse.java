@@ -15,11 +15,8 @@ public final class AuctionHouse extends JavaPlugin {
     public void onEnable() {
         Shop shop = new Shop();
         XConomyAPI xConomyAPI = new XConomyAPI();
-        MoneyTransfer moneyTransfer = new MoneyTransfer(shop, xConomyAPI);
-
-        ServerTicker serverTicker = new ServerTicker(this, shop);
-
-        CommandManager commandManager = new CommandManager(xConomyAPI, shop, moneyTransfer, this);
+        new ServerTicker(this, shop);
+        CommandManager commandManager = new CommandManager(xConomyAPI, shop, this);
 
         Objects.requireNonNull(getCommand("shop")).setExecutor(commandManager);
         Objects.requireNonNull(getCommand("sell")).setExecutor(commandManager);
