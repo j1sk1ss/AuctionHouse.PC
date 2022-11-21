@@ -45,9 +45,9 @@ public class CommandManager implements CommandExecutor {
         if (command.getName().equals("shop")) {
             ShopWindow shopWindow = new ShopWindow(54, "Рынок", shop, plugin);
 
-            WindowListeners<ShopWindow> windowListeners = new WindowListeners<ShopWindow>
-                    (moneyTransfer, xConomyAPI, shop, shopWindow, player);
-            Bukkit.getPluginManager().registerEvents(windowListeners, plugin);
+            Bukkit.getPluginManager().registerEvents(
+                    new WindowListeners<>(moneyTransfer, xConomyAPI, shop, shopWindow, player), plugin
+            );
 
             shopWindow.ShowWindow(0, player, true);
         }

@@ -1,4 +1,5 @@
 package me.js.auc.auctionhouse.event;
+import me.js.auc.auctionhouse.AuctionHouse;
 import me.js.auc.auctionhouse.interfaces.IWindow;
 import me.js.auc.auctionhouse.scripts.PluginManager;
 import me.js.auc.auctionhouse.lists.Shop;
@@ -99,8 +100,7 @@ public class WindowListeners<T> implements Listener {
         switch (clickPosition) {
             case 48 -> window.PriceSort(true);
             case 49 -> window.PriceSort(false);
-            case 46 -> window.TimeSort(true);
-            case 47 -> window.TimeSort(false);
+            case 46 -> window.TimeSort();
         }
     }
     private void SwipePage(Integer page, Player player, T window) {
@@ -114,7 +114,7 @@ public class WindowListeners<T> implements Listener {
     }
     @EventHandler
     public void Closed(InventoryCloseEvent event) {
-        if (isClose) {
+        if (isClose && event.getPlayer() == owner) {
             owner = null;
             moneyTransfer = null;
             xConomyAPI = null;

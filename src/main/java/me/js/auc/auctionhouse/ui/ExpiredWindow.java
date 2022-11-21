@@ -28,9 +28,9 @@ public class ExpiredWindow implements IWindow<ExpiredWindow> {
     private List<Item> expiredItems;
     private final Inventory expiredWindow;
     private final Integer PageCapacity = 45;
-    public void TimeSort(boolean Biggest) {
+    public void TimeSort() {
         shop.PlayerExpired(playerData).expiredItems = new ArrayList<Item>(
-                new Sorting().TimeSort(Biggest, expiredItems)
+                new Sorting().TimeSort(expiredItems)
         );
         UpdateLocalList();
     }

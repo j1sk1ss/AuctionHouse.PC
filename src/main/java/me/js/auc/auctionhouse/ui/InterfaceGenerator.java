@@ -17,10 +17,8 @@ public class InterfaceGenerator {
 
         if (indexWindow - 1 >= 0) window.setItem(prevWindow, itemStack);
 
-        itemStack = itemWorker.SetName(new ItemStack(Material.ACACIA_SIGN), "Самые новые:");
+        itemStack = itemWorker.SetName(new ItemStack(Material.ACACIA_SIGN), "По дате:");
         window.setItem(46, itemStack);
-        itemStack = itemWorker.SetName(new ItemStack(Material.ACACIA_SIGN), "Самые старые:");
-        window.setItem(47, itemStack);
         itemStack = itemWorker.SetName(new ItemStack(Material.ACACIA_SIGN), "Самые дорогие:");
         window.setItem(48, itemStack);
         itemStack = itemWorker.SetName(new ItemStack(Material.ACACIA_SIGN), "Самые дешёвые:");

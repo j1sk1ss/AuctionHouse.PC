@@ -6,6 +6,6 @@ import org.bukkit.plugin.Plugin;
 
 public class ServerTicker {
     public ServerTicker(Plugin plugin, Shop shop) {
-        Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, shop::TimeDecrease, 1L, 50L);
+        Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, shop::TimeDecrease, 0L, 50L);
     }
 }

@@ -21,18 +21,23 @@ public class ShopWindow implements Listener, IWindow<ShopWindow> {
         shopWindow = Bukkit.createInventory(null, size, name);
         this.shop = shop;
         this.plugin = plugin;
+        TransactionSyncing();
     }
+    private List<Item> shopList;
     private final Plugin plugin;
     private final Inventory shopWindow;
     private final Integer PageCapacity = 45;
     private int tasked = 9;
 
     public Shop shop;
-    public void TimeSort(boolean Biggest) {
-        shop.shopList = new Sorting().TimeSort(Biggest, shop.shopList);
+    public void TimeSort() {
+        shopList = new Sorting().TimeSort(shop.shopList);
     }
     public void PriceSort(boolean Biggest) {
-        shop.shopList = new Sorting().PriceSort(Biggest, shop.shopList);
+        shopList = new Sorting().PriceSort(Biggest, shop.shopList);
+    }
+    public void TransactionSyncing() {
+        this.shopList = shop.shopList;
     }
     @Override
     public void ShowWindow(Integer window, Player player, Boolean open) {
@@ -46,12 +51,14 @@ public class ShopWindow implements Listener, IWindow<ShopWindow> {
         }, 1L, 1L);
     }
     public void FillWindow(int startIndex, int indexWindow) {
+        if (shopList.size() != shop.shopList.size()) TransactionSyncing();
+
         shopWindow.clear();
         ItemWorker itemWorker = new ItemWorker();
 
         for (int i = startIndex; i < PageCapacity * (indexWindow + 1); i++) {
-            if (shop.shopList.size() <= i) break;
-            Item chosenItem = shop.shopList.get(i);
+            if (shopList.size() <= i) break;
+            Item chosenItem = shopList.get(i);
             ItemStack tempItem = chosenItem.Item;
             tempItem = itemWorker.SetLore(tempItem,
                     "Цена: " + chosenItem.Price + "₽" +
