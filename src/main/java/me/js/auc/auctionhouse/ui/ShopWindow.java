@@ -30,16 +30,15 @@ public class ShopWindow implements Listener, IWindow<ShopWindow> {
     private int tasked = 9;
 
     public Shop shop;
-    public void TimeSort() {
-        shopList = new Sorting().TimeSort(shop.shopList);
-    }
-    public void PriceSort(boolean Biggest) {
-        shopList = new Sorting().PriceSort(Biggest, shop.shopList);
-    }
+    public void TimeSort() { shopList = new Sorting().TimeSort(shop.shopList); }
+    public void PriceSort(boolean Biggest) { shopList = new Sorting().PriceSort(Biggest, shop.shopList); }
     public void TransactionSyncing() { this.shopList = shop.shopList; }
+    private final List<Integer> positions = Arrays.asList(45, 53);
     @Override
     public void ShowWindow(Integer window, Player player, Boolean open) {
         if (open) player.openInventory(shopWindow);
+
+        new InterfaceGenerator().SetUserInterface(shopWindow, new ItemWorker(), window, positions);
         FillWindow(window * PageCapacity, window);
 
         Bukkit.getServer().getScheduler().cancelTask(tasked);
@@ -51,7 +50,6 @@ public class ShopWindow implements Listener, IWindow<ShopWindow> {
         shopWindow.clear();
 
         ItemWorker itemWorker = new ItemWorker();
-
         for (int i = startIndex; i < PageCapacity * (indexWindow + 1); i++) {
             if (shopList.size() <= i) break;
             Item chosenItem = shopList.get(i);
@@ -59,12 +57,10 @@ public class ShopWindow implements Listener, IWindow<ShopWindow> {
             tempItem = itemWorker.SetLore(tempItem,
                     "Цена: " + chosenItem.Price + "₽" +
                     "\nЦена за еденицу: " + String.format("%.1f",(chosenItem.Price/chosenItem.Item.getAmount()))+ "₽" +
-                    "\nВладелец: " + chosenItem.Owner.getName() +
+                    "\nВладелец: " + chosenItem.OwnerData.getName() +
                     "\nСрок: " + chosenItem.expiredDelay + " тик");
             shopWindow.setItem(i - startIndex, tempItem);
         }
-        List<Integer> positions = Arrays.asList(45, 53);
-        new InterfaceGenerator().SetUserInterface(shopWindow, itemWorker, indexWindow, positions);
     }
     @Override
     public ShopWindow GetWindow() {return this;}

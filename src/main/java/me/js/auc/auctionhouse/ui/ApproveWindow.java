@@ -13,9 +13,13 @@ public class ApproveWindow implements IWindow<ApproveWindow> {
     public ApproveWindow(ItemStack chosenItem) {
         this.chosenItem = chosenItem;
     }
-    private Inventory approveWindow;
     private final ItemStack chosenItem;
-
+    private Inventory approveWindow;
+    public void ShowWindow(Integer window, Player player, Boolean open) {
+        approveWindow = Bukkit.createInventory(player, 9, "Покупка");
+        FillWindow();
+        if (open) player.openInventory(approveWindow);
+    }
     private void FillWindow() {
         ItemWorker itemWorker = new ItemWorker();
 
@@ -27,17 +31,10 @@ public class ApproveWindow implements IWindow<ApproveWindow> {
         tempBlock = itemWorker.SetName(new ItemStack(Material.GREEN_STAINED_GLASS_PANE), "КУПИТЬ");
         for (int i = 6; i < 9; i++) approveWindow.setItem(i, tempBlock);
     }
-    public void ShowWindow(Integer window, Player player, Boolean open) {
-        approveWindow = Bukkit.createInventory(player, 9, "Покупка");
-        FillWindow();
-        if (open) player.openInventory(approveWindow);
-    }
-
     @Override
     public ApproveWindow GetWindow() {
         return this;
     }
-
     @Override
     public void PriceSort(boolean Biggest) {}
     @Override

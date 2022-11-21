@@ -1,5 +1,5 @@
 package me.js.auc.auctionhouse.event;
-import me.js.auc.auctionhouse.AuctionHouse;
+
 import me.js.auc.auctionhouse.interfaces.IWindow;
 import me.js.auc.auctionhouse.scripts.PluginManager;
 import me.js.auc.auctionhouse.lists.Shop;
@@ -38,16 +38,17 @@ public class WindowListeners<T> implements Listener {
     private Boolean isClose = false;
     private Integer clickPosition = 0;
     @EventHandler
-    public void onClick(InventoryClickEvent event) {
+    private void onClick(InventoryClickEvent event) {
         if (event.getWhoClicked() instanceof Player player) {
-            final int windowCapacity = 45;
+
+            String windowName = event.getView().getTitle();
 
             if (player != owner || !event.isLeftClick() || event.getCurrentItem() == null) return;
-            if (!event.getView().getTitle().equals("Покупка")) clickPosition = event.getSlot();
+            if (!windowName.equals("Покупка")) clickPosition = event.getSlot();
 
-            Inventory thisInventory = event.getInventory();
-
-            switch (event.getView().getTitle()) {
+            final Inventory thisInventory = event.getInventory();
+            final int windowCapacity = 45;
+            switch (windowName) {
                 case "Рынок" -> {
                     if (clickPosition < windowCapacity) {
                         isClose = false;
@@ -67,8 +68,8 @@ public class WindowListeners<T> implements Listener {
                     final int cancelPosition = 5;
                     ShopWindow tempWindow = (ShopWindow)window;
                     if (event.getSlot() >= cancelPosition) {
-                        moneyTransfer.BuyItem(pluginManager.GetPlayerData(player.getName(), xConomyAPI),
-                                tempWindow.shop.shopList.get(clickPosition).UniqId, shop);
+                        moneyTransfer.BuyItem(owner, pluginManager.GetPlayerData(player.getUniqueId(), xConomyAPI),
+                                tempWindow.shop.shopList.get(clickPosition), shop);
                     }
                     isClose = false;
                     tempWindow.ShowWindow(0, player, true);
@@ -105,7 +106,6 @@ public class WindowListeners<T> implements Listener {
     }
     private void SwipePage(Integer page, Player player, T window) {
         if (window == null) return;
-
         if (window instanceof ShopWindow tempWindow) {
             tempWindow.ShowWindow(page, player, false);
         } else if (window instanceof ExpiredWindow tempWindow) {
@@ -113,7 +113,7 @@ public class WindowListeners<T> implements Listener {
         }
     }
     @EventHandler
-    public void Closed(InventoryCloseEvent event) {
+    private void Closed(InventoryCloseEvent event) {
         if (isClose && event.getPlayer() == owner) {
             owner = null;
             moneyTransfer = null;

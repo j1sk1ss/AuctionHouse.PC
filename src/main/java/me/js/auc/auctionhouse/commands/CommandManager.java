@@ -53,7 +53,6 @@ public class CommandManager implements CommandExecutor {
         }
 
         PlayerData playerData = xConomyAPI.getPlayerData(player.getUniqueId());
-
         if (command.getName().equals("sell")) {
             final int costArg = 1;
             ItemStack sellingItem = player.getInventory().getItemInMainHand();
