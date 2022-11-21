@@ -13,6 +13,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
@@ -48,7 +49,6 @@ public class WindowListeners<T> implements Listener {
             switch (event.getView().getTitle()) {
                 case "Рынок" -> {
                     if (clickPosition < windowCapacity) {
-
                         isClose = false;
                         ApproveWindow approveWindow = new ApproveWindow(event.getCurrentItem());
                         approveWindow.ShowWindow(0, player, true);
@@ -64,34 +64,29 @@ public class WindowListeners<T> implements Listener {
                 }
                 case "Покупка" -> {
                     final int cancelPosition = 5;
+                    ShopWindow tempWindow = (ShopWindow)window;
                     if (event.getSlot() >= cancelPosition) {
-                        ShopWindow tempWindow = (ShopWindow)window;
                         moneyTransfer.BuyItem(pluginManager.GetPlayerData(player.getName(), xConomyAPI),
                                 tempWindow.shop.shopList.get(clickPosition).UniqId, shop);
                     }
                     isClose = false;
-
-                    ShopWindow tempWindow = (ShopWindow)window;
                     tempWindow.ShowWindow(0, player, true);
-
                     event.setCancelled(true);
                 }
                 case "Просрочка" -> {
+                    ExpiredWindow tempWindow = (ExpiredWindow) window;
                     if (clickPosition < windowCapacity) {
                         ItemStack itemStack = thisInventory.getItem(clickPosition);
                         assert itemStack != null;
-
                         player.getInventory().addItem(new ItemStack(itemStack.getType(), itemStack.getAmount()));
-
-                        ((ExpiredWindow)window).TakeItem(clickPosition);
+                        tempWindow.TakeItem(clickPosition);
                         thisInventory.setItem(clickPosition, null);
-
                         SwipePage(0, player, window);
                     } else {
                         if (clickPosition == 45 || clickPosition == 53) {
                             SwipePage(Integer.parseInt(event.getCurrentItem().getItemMeta().getDisplayName()), player, window);
                         } else {
-                            SortPage(((ExpiredWindow)window), clickPosition);
+                            SortPage(tempWindow, clickPosition);
                             SwipePage(0, player, window);
                         }
                     }
@@ -126,6 +121,7 @@ public class WindowListeners<T> implements Listener {
             pluginManager = null;
             shop = null;
             window = null;
+            PlayerInteractEvent.getHandlerList().unregister(this);
         } else {
             isClose = true;
         }

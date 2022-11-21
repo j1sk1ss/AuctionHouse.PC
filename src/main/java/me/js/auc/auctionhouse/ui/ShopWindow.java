@@ -24,9 +24,10 @@ public class ShopWindow implements Listener, IWindow<ShopWindow> {
     }
     private final Plugin plugin;
     private final Inventory shopWindow;
+    private final Integer PageCapacity = 45;
+    private int tasked = 9;
+
     public Shop shop;
-    final Integer PageCapacity = 45;
-    int tasked = 9;
     public void TimeSort(boolean Biggest) {
         shop.shopList = new Sorting().TimeSort(Biggest, shop.shopList);
     }
@@ -36,7 +37,6 @@ public class ShopWindow implements Listener, IWindow<ShopWindow> {
     @Override
     public void ShowWindow(Integer window, Player player, Boolean open) {
         if (open) player.openInventory(shopWindow);
-
         FillWindow(window * PageCapacity, window);
         Bukkit.getServer().getScheduler().cancelTask(tasked);
         tasked = Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable(){
