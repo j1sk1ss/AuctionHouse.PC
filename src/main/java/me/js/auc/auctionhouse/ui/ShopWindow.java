@@ -36,24 +36,20 @@ public class ShopWindow implements Listener, IWindow<ShopWindow> {
     public void PriceSort(boolean Biggest) {
         shopList = new Sorting().PriceSort(Biggest, shop.shopList);
     }
-    public void TransactionSyncing() {
-        this.shopList = shop.shopList;
-    }
+    public void TransactionSyncing() { this.shopList = shop.shopList; }
     @Override
     public void ShowWindow(Integer window, Player player, Boolean open) {
         if (open) player.openInventory(shopWindow);
         FillWindow(window * PageCapacity, window);
+
         Bukkit.getServer().getScheduler().cancelTask(tasked);
-        tasked = Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable(){
-            public void run() {
-                FillWindow(window * PageCapacity, window);
-            }
-        }, 1L, 1L);
+        tasked = Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, () ->
+                FillWindow(window * PageCapacity, window), 0L, 1L);
     }
     public void FillWindow(int startIndex, int indexWindow) {
         if (shopList.size() != shop.shopList.size()) TransactionSyncing();
-
         shopWindow.clear();
+
         ItemWorker itemWorker = new ItemWorker();
 
         for (int i = startIndex; i < PageCapacity * (indexWindow + 1); i++) {
