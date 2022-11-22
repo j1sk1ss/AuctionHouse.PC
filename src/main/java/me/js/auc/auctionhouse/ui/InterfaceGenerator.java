@@ -13,7 +13,7 @@ public class InterfaceGenerator {
         final Integer prevWindow = positions.get(0);
         final Integer nextWindow = positions.get(1);
 
-        ItemStack itemStack = itemWorker.SetName(new ItemStack(Material.ACACIA_BOAT), indexWindow - 1 + "");
+        var itemStack = itemWorker.SetName(new ItemStack(Material.ACACIA_BOAT), indexWindow - 1 + "");
 
         if (indexWindow - 1 >= 0) window.setItem(prevWindow, itemStack);
 

@@ -47,8 +47,8 @@ public class ExpiredWindow implements IWindow<ExpiredWindow> {
         if (open) player.openInventory(expiredWindow);
     }
     private void FillWindow(int startIndex, int indexWindow) {
-        ItemWorker itemWorker = new ItemWorker();
-        List<Integer> positions = Arrays.asList(45, 53);
+        var itemWorker = new ItemWorker();
+        var positions = Arrays.asList(45, 53);
         new InterfaceGenerator().SetUserInterface(expiredWindow, itemWorker, indexWindow, positions);
 
         for (int i = startIndex; i < PageCapacity * (indexWindow + 1); i++) {

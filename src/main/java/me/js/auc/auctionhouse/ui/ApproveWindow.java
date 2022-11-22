@@ -21,9 +21,9 @@ public class ApproveWindow implements IWindow<ApproveWindow> {
         if (open) player.openInventory(approveWindow);
     }
     private void FillWindow() {
-        ItemWorker itemWorker = new ItemWorker();
+        var itemWorker = new ItemWorker();
 
-        ItemStack tempBlock = itemWorker.SetName(new ItemStack(Material.RED_STAINED_GLASS_PANE), "ОТМЕНА");
+        var tempBlock = itemWorker.SetName(new ItemStack(Material.RED_STAINED_GLASS_PANE), "ОТМЕНА");
         for (int i = 0; i < 3; i++) approveWindow.setItem(i, tempBlock);
 
         approveWindow.setItem(4, chosenItem);

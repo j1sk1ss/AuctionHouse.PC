@@ -52,10 +52,10 @@ public class WindowListeners<T> implements Listener {
                 case "Рынок" -> {
                     if (clickPosition < windowCapacity) {
                         isClose = false;
-                        ApproveWindow approveWindow = new ApproveWindow(event.getCurrentItem());
+                        var approveWindow = new ApproveWindow(event.getCurrentItem());
                         approveWindow.ShowWindow(0, player, true);
                     } else {
-                        ShopWindow tempWindow = (ShopWindow)window;
+                        var tempWindow = (ShopWindow)window;
                         if (clickPosition == 45 || clickPosition == 53) {
                             SwipePage(Integer.parseInt(event.getCurrentItem().getItemMeta().getDisplayName()), player, window);
                             tempWindow.shop.shopList = new ArrayList<>(shop.shopList);
@@ -66,7 +66,7 @@ public class WindowListeners<T> implements Listener {
                 }
                 case "Покупка" -> {
                     final int cancelPosition = 5;
-                    ShopWindow tempWindow = (ShopWindow)window;
+                    var tempWindow = (ShopWindow)window;
                     if (event.getSlot() >= cancelPosition) {
                         moneyTransfer.BuyItem(owner, pluginManager.GetPlayerData(player.getUniqueId(), xConomyAPI),
                                 tempWindow.shop.shopList.get(clickPosition), shop);
@@ -78,7 +78,7 @@ public class WindowListeners<T> implements Listener {
                 case "Просрочка" -> {
                     ExpiredWindow tempWindow = (ExpiredWindow) window;
                     if (clickPosition < windowCapacity) {
-                        ItemStack itemStack = thisInventory.getItem(clickPosition);
+                        var itemStack = thisInventory.getItem(clickPosition);
                         assert itemStack != null;
                         player.getInventory().addItem(new ItemStack(itemStack.getType(), itemStack.getAmount()));
                         tempWindow.TakeItem(clickPosition);

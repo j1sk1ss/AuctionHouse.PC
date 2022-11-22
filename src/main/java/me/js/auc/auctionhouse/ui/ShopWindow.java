@@ -49,11 +49,11 @@ public class ShopWindow implements Listener, IWindow<ShopWindow> {
         if (shopList.size() != shop.shopList.size()) TransactionSyncing();
         shopWindow.clear();
 
-        ItemWorker itemWorker = new ItemWorker();
+        var itemWorker = new ItemWorker();
         for (int i = startIndex; i < PageCapacity * (indexWindow + 1); i++) {
             if (shopList.size() <= i) break;
-            Item chosenItem = shopList.get(i);
-            ItemStack tempItem = chosenItem.Item;
+            var chosenItem = shopList.get(i);
+            var tempItem = chosenItem.Item;
             tempItem = itemWorker.SetLore(tempItem,
                     "Цена: " + chosenItem.Price + "₽" +
                     "\nЦена за еденицу: " + String.format("%.1f",(chosenItem.Price/chosenItem.Item.getAmount()))+ "₽" +

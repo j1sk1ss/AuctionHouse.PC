@@ -15,11 +15,11 @@ public class Shop {
     public List<Expired> playerExpireds;
     public void TimeDecrease() {
         for (int i = 0; i < shopList.size(); i++) {
-            Item item = shopList.get(i);
+            var item = shopList.get(i);
             item.expiredDelay -= 10;
 
             if (!isExpired(item)) continue;
-            Expired tempExpired = PlayerExpired(item.OwnerData);
+            var tempExpired = PlayerExpired(item.OwnerData);
             tempExpired.expiredItems.add(item);
             playerExpireds.add(tempExpired);
             shopList.remove(i);
