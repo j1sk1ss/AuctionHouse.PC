@@ -18,7 +18,7 @@ public class MoneyTransfer {
     }
     private final XConomyAPI xConomyAPI;
     public void SellItem(Double price, PlayerData player, ItemStack item, Shop shop) {
-        var sellItem = new Item(item, price, player);
+        var sellItem = new Item(item, item.getItemMeta(), price, player);
         shop.shopList.add(sellItem);
     }
     public void BuyItem(Player buyer, PlayerData buyerData, Item item, Shop shop) {

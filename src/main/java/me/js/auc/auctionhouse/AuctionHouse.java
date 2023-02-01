@@ -20,6 +20,7 @@ public final class AuctionHouse extends JavaPlugin {
     public void onEnable() {
         shop = new Shop();
 
+        /*
         if (new File("AuctionData.txt").exists()) {
             try {
                 shop = new DataWorker().GetData();
@@ -27,6 +28,7 @@ public final class AuctionHouse extends JavaPlugin {
                 throw new RuntimeException(e);
             }
         }
+        */
 
         XConomyAPI xConomyAPI = new XConomyAPI();
         new ServerTicker(this, shop);
@@ -35,6 +37,7 @@ public final class AuctionHouse extends JavaPlugin {
         Objects.requireNonNull(getCommand("shop")).setExecutor(commandManager);
         Objects.requireNonNull(getCommand("sell")).setExecutor(commandManager);
         Objects.requireNonNull(getCommand("expired")).setExecutor(commandManager);
+        Objects.requireNonNull(getCommand("save")).setExecutor(commandManager);
     }
     @Override
     public void onDisable() {

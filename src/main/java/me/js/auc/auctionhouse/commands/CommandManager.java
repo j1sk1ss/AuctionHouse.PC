@@ -6,9 +6,10 @@ import me.js.auc.auctionhouse.lists.Shop;
 import me.js.auc.auctionhouse.scripts.MoneyTransfer;
 import me.js.auc.auctionhouse.ui.ExpiredWindow;
 import me.js.auc.auctionhouse.ui.ShopWindow;
-import me.yic.xconomy.api.XConomyAPI;
 
+import me.yic.xconomy.api.XConomyAPI;
 import me.yic.xconomy.data.syncdata.PlayerData;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -17,6 +18,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
+
 import org.jetbrains.annotations.NotNull;
 
 public class CommandManager implements CommandExecutor {
@@ -78,6 +80,9 @@ public class CommandManager implements CommandExecutor {
 
             expiredWindow.ShowWindow(0, player, true);
         }
+
+        if (command.getName().equals("save")) new DataWorker().SaveData(shop);
+
         return true;
     }
     public static boolean isHaveAccess(Player player, String[] groups) {

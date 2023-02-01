@@ -2,6 +2,7 @@ package me.js.auc.auctionhouse.ui;
 
 import me.js.auc.auctionhouse.interfaces.IWindow;
 import me.js.auc.auctionhouse.scripts.ItemWorker;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;

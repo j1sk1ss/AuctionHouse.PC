@@ -15,3 +15,6 @@ commands:
   expired:
     description: open expired window
     usage: /expired <player_nickname>
+  save:
+    description: saves global shop and all player`s expired items
+    usage: /save

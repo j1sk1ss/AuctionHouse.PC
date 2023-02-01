@@ -4,13 +4,12 @@ import me.js.auc.auctionhouse.interfaces.IWindow;
 import me.js.auc.auctionhouse.lists.Shop;
 import me.js.auc.auctionhouse.object.Item;
 import me.js.auc.auctionhouse.scripts.ItemWorker;
-
 import me.js.auc.auctionhouse.scripts.Sorting;
+
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
 import java.util.Arrays;
