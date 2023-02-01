@@ -2,6 +2,7 @@ package me.js.auc.auctionhouse.lists;
 
 import me.js.auc.auctionhouse.object.Item;
 import me.yic.xconomy.data.syncdata.PlayerData;
+import org.codehaus.jackson.annotate.JsonIgnore;
 
 import java.util.ArrayList;
 import java.util.List;
