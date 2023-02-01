@@ -6,7 +6,7 @@ import me.yic.xconomy.data.syncdata.PlayerData;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Shop {
+public class Shop implements java.io.Serializable {
     public Shop() {
         shopList = new ArrayList<>();
         playerExpireds = new ArrayList<>();

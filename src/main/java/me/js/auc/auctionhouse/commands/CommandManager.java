@@ -1,5 +1,6 @@
 package me.js.auc.auctionhouse.commands;
 
+import me.js.auc.auctionhouse.dataStore.DataWorker;
 import me.js.auc.auctionhouse.event.WindowListeners;
 import me.js.auc.auctionhouse.lists.Shop;
 import me.js.auc.auctionhouse.scripts.MoneyTransfer;
@@ -69,6 +70,7 @@ public class CommandManager implements CommandExecutor {
         }
 
         if (command.getName().equals("expired")) {
+            new DataWorker().SaveData(shop);
             ExpiredWindow expiredWindow = new ExpiredWindow(54, "Просрочка", shop, playerData);
             WindowListeners<ExpiredWindow> windowListeners = new WindowListeners<>
                     (moneyTransfer, xConomyAPI, shop, expiredWindow, player);

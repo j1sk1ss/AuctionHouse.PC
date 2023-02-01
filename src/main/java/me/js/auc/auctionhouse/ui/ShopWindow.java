@@ -50,6 +50,8 @@ public class ShopWindow implements Listener, IWindow<ShopWindow> {
         shopWindow.clear();
 
         var itemWorker = new ItemWorker();
+        new InterfaceGenerator().SetUserInterface(shopWindow, itemWorker, indexWindow, positions);
+
         for (int i = startIndex; i < PageCapacity * (indexWindow + 1); i++) {
             if (shopList.size() <= i) break;
             var chosenItem = shopList.get(i);

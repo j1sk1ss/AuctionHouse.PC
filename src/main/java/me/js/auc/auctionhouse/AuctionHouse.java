@@ -20,9 +20,9 @@ public final class AuctionHouse extends JavaPlugin {
     public void onEnable() {
         shop = new Shop();
 
-        if (new File("market.json").exists()) {
+        if (new File("AuctionData.txt").exists()) {
             try {
-                shop = new DataWorker().GetData(Files.readString(Path.of("market.json")));
+                shop = new DataWorker().GetData();
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }

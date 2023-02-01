@@ -19,6 +19,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class WindowListeners<T> implements Listener {
     public WindowListeners(MoneyTransfer moneyTransfer, XConomyAPI xConomyAPI, Shop shop, T window,
@@ -43,7 +44,9 @@ public class WindowListeners<T> implements Listener {
 
             String windowName = event.getView().getTitle();
 
+            if (Objects.requireNonNull(event.getClickedInventory()).getSize() < 54 && !windowName.equals("Покупка")) return;
             if (player != owner || !event.isLeftClick() || event.getCurrentItem() == null) return;
+
             if (!windowName.equals("Покупка")) clickPosition = event.getSlot();
 
             final Inventory thisInventory = event.getInventory();
