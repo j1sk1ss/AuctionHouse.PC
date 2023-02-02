@@ -35,7 +35,7 @@ public class PlayerTrade {
                 trade.Buyer.sendMessage("Запрос отклонён.");
 
                 ServerTrades.remove(trade);
-                break;
+                return;
             }
         }
 
@@ -61,7 +61,7 @@ public class PlayerTrade {
 
                 trade.Buyer.sendMessage("Предмет не найден в руке у продавца.");
                 trade.Seller.sendMessage("Положите предмет в главную руку!");
-                break;
+                return;
             }
         }
 
@@ -70,7 +70,7 @@ public class PlayerTrade {
 
     public Boolean isActiveTrade(Player seller) {
         for (Trade trade : ServerTrades) {
-            if (trade.Seller == seller) {
+            if (trade.Seller == seller || trade.Buyer == seller) {
                 return true;
             }
         }
