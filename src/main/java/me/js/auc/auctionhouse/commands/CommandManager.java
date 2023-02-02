@@ -62,6 +62,11 @@ public class CommandManager implements CommandExecutor {
                 return true;
             }
 
+            if (playerTrade.isActiveTrade(seller)) {
+                seller.sendMessage("У вас имеется исходящее предложение продажи.\nОтмените его перед созданием нового.");
+                return true;
+            }
+
             playerTrade.CreateTradeOffer(seller, buyer, sellItem);
             seller.sendMessage("Вы отправили запрос на продажу!\nДля его отмены используйте /trdreject");
             buyer.sendMessage("У вас появился запрос на покупку!\nДанные:\n"+sellItem.Item.getI18NDisplayName()+" за: "

@@ -46,6 +46,11 @@ public class PlayerTrade {
         for (Trade trade : ServerTrades) {
             if (trade.Buyer == buyer) {
 
+                if (trade.Seller.getLocation().distanceSquared(buyer.getLocation()) > 10) {
+                    buyer.sendMessage("Вы находитесь слишком далеко от продавца!");
+                    return;
+                }
+
                 if (trade.Item.Item.equals(trade.Seller.getInventory().getItemInMainHand())) {
                     moneyTransfer.BuyItem(buyer, new PluginManager().GetPlayerData(buyer.getUniqueId(), xConomyAPI),
                             trade.Item, null);
@@ -61,5 +66,15 @@ public class PlayerTrade {
         }
 
         buyer.sendMessage("Нет входящих предложений.");
+    }
+
+    public Boolean isActiveTrade(Player seller) {
+        for (Trade trade : ServerTrades) {
+            if (trade.Seller == seller) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
