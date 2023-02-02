@@ -1,5 +1,6 @@
 package me.js.auc.auctionhouse.lists;
 
+import me.js.auc.auctionhouse.AuctionHouse;
 import me.js.auc.auctionhouse.object.Item;
 import me.yic.xconomy.data.syncdata.PlayerData;
 
@@ -13,7 +14,8 @@ public class Shop implements java.io.Serializable {
     }
     public List<Item> shopList; // Лист предметов в магазине
     public List<Expired> playerExpireds; // Лист обьектов просрочки.
-    final int expiredDelayModificator = 10; // Модификатор по уменьшению срока годности
+    final int expiredDelayModificator = AuctionHouse.getPlugin(AuctionHouse.class).getConfig().
+            getInt("auction.decay_rate"); // Модификатор по уменьшению срока годности
 
     public void TimeDecrease() { // Метод по уменьшению времени годности
         for (int i = 0; i < shopList.size(); i++) {

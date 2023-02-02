@@ -54,7 +54,7 @@ public class ExpiredWindow implements IWindow<ExpiredWindow> {
     private void FillWindow(int startIndex, int indexWindow) {
         var itemWorker = new ItemWorker();
         var positions = Arrays.asList(45, 53);
-        new InterfaceGenerator().SetUserInterface(expiredWindow, itemWorker, indexWindow, positions);
+        new InterfaceGenerator().SetUserInterface(expiredWindow, itemWorker, indexWindow);
 
         for (int i = startIndex; i < PageCapacity * (indexWindow + 1); i++) {
             if (shop.PlayerExpired(playerData).expiredItems.size() <= i) break;

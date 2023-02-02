@@ -1,5 +1,6 @@
 package me.js.auc.auctionhouse.ui;
 
+import me.js.auc.auctionhouse.AuctionHouse;
 import me.js.auc.auctionhouse.interfaces.IWindow;
 import me.js.auc.auctionhouse.scripts.ItemWorker;
 
@@ -17,19 +18,24 @@ public class ApproveWindow implements IWindow<ApproveWindow> {
     private final ItemStack chosenItem;
     private Inventory approveWindow;
     public void ShowWindow(Integer window, Player player, Boolean open) {
-        approveWindow = Bukkit.createInventory(player, 9, "Покупка");
+        approveWindow = Bukkit.createInventory(player, AuctionHouse.getPlugin(AuctionHouse.class).getConfig().
+                getInt("auction.approve_window.approve_window_size"), "Покупка");
         FillWindow();
         if (open) player.openInventory(approveWindow);
     }
     private void FillWindow() {
         var itemWorker = new ItemWorker();
 
-        var tempBlock = itemWorker.SetName(new ItemStack(Material.RED_STAINED_GLASS_PANE), "ОТМЕНА");
+        var tempBlock = itemWorker.SetName(new ItemStack(
+                Material.getMaterial(AuctionHouse.getPlugin(AuctionHouse.class).getConfig().getString("auction.approve_window.cancel_icon"))
+        ), AuctionHouse.getPlugin(AuctionHouse.class).getConfig().getString("auction.approve_window.cancel_text"));
         for (int i = 0; i < 3; i++) approveWindow.setItem(i, tempBlock);
 
         approveWindow.setItem(4, chosenItem);
 
-        tempBlock = itemWorker.SetName(new ItemStack(Material.GREEN_STAINED_GLASS_PANE), "КУПИТЬ");
+        tempBlock = itemWorker.SetName(new ItemStack(
+                Material.getMaterial(AuctionHouse.getPlugin(AuctionHouse.class).getConfig().getString("auction.approve_window.accept_icon"))
+        ), AuctionHouse.getPlugin(AuctionHouse.class).getConfig().getString("auction.approve_window.accept_text"));
         for (int i = 6; i < 9; i++) approveWindow.setItem(i, tempBlock);
     }
     @Override

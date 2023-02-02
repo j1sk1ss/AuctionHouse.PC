@@ -1,5 +1,6 @@
 package me.js.auc.auctionhouse.ui;
 
+import me.js.auc.auctionhouse.AuctionHouse;
 import me.js.auc.auctionhouse.interfaces.IWindow;
 import me.js.auc.auctionhouse.lists.Shop;
 import me.js.auc.auctionhouse.object.Item;
@@ -25,7 +26,8 @@ public class ShopWindow implements Listener, IWindow<ShopWindow> {
     private List<Item> shopList;
     private final Plugin plugin;
     private final Inventory shopWindow;
-    private final Integer PageCapacity = 45;
+    private final Integer PageCapacity = AuctionHouse.getPlugin(AuctionHouse.class).getConfig().
+            getInt("auction.shop_window.shop_page_capacity");
     private int tasked = 9;
     public Shop shop;
     public void TimeSort() { shopList = new Sorting().TimeSort(shop.shopList); }
@@ -37,7 +39,7 @@ public class ShopWindow implements Listener, IWindow<ShopWindow> {
     public void ShowWindow(Integer window, Player player, Boolean open) {
         if (open) player.openInventory(shopWindow);
 
-        new InterfaceGenerator().SetUserInterface(shopWindow, new ItemWorker(), window, positions);
+        new InterfaceGenerator().SetUserInterface(shopWindow, new ItemWorker(), window);
         FillWindow(window * PageCapacity, window);
 
         Bukkit.getServer().getScheduler().cancelTask(tasked);
@@ -50,7 +52,7 @@ public class ShopWindow implements Listener, IWindow<ShopWindow> {
         shopWindow.clear();
 
         var itemWorker = new ItemWorker();
-        new InterfaceGenerator().SetUserInterface(shopWindow, itemWorker, indexWindow, positions);
+        new InterfaceGenerator().SetUserInterface(shopWindow, itemWorker, indexWindow);
 
         for (int i = startIndex; i < PageCapacity * (indexWindow + 1); i++) {
             if (shopList.size() <= i) break;

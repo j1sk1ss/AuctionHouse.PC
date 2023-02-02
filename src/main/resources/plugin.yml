@@ -27,3 +27,44 @@ commands:
   trdreject:
     description: reject trade
     usage: /trdreject
+
+auction:
+  max_duration: 10000
+  decay_rate: 50
+  banned:
+    -BEDROCK
+
+  windows:
+    data_sort_position: 46
+    data_icon: ACACIA_SIGN
+    data_text: "По дате:"
+    biggest_price_sort_position: 48
+    biggest_icon: ACACIA_SIGN
+    biggest_text: "Самые дорогие:"
+    smallest_price_sort_position: 49
+    smallest_icon: ACACIA_SIGN
+    smallest_text: "Самые дешёвые:"
+
+    previous_page_position: 45
+    previous_icon: ACACIA_BOAT
+    next_page_position: 53
+    next_icon: ACACIA_BOAT
+
+  shop_window:
+    shop_window_size: 54
+    shop_page_capacity: 45
+
+  expired_window:
+    expired_window_size: 54
+    expired_page_capacity: 45
+
+  approve_window:
+    approve_window_size: 9
+    approve_page_capacity: 9
+    accept_icon: GREEN_STAINED_GLASS_PANE
+    accept_text: "КУПИТЬ"
+    cancel_icon: RED_STAINED_GLASS_PANE
+    cancel_text: "ОТМЕНА"
+
+trade:
+  max_distance: 10

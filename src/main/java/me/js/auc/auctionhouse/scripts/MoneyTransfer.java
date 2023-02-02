@@ -10,7 +10,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.math.BigDecimal;
-import java.util.*;
 
 public class MoneyTransfer {
     public MoneyTransfer(XConomyAPI xConomyAPI) {

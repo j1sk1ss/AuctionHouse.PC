@@ -1,5 +1,6 @@
 package me.js.auc.auctionhouse.trading;
 
+import me.js.auc.auctionhouse.AuctionHouse;
 import me.js.auc.auctionhouse.object.Item;
 import me.js.auc.auctionhouse.scripts.MoneyTransfer;
 import me.js.auc.auctionhouse.scripts.PluginManager;
@@ -46,7 +47,8 @@ public class PlayerTrade {
         for (Trade trade : ServerTrades) {
             if (trade.Buyer == buyer) {
 
-                if (trade.Seller.getLocation().distanceSquared(buyer.getLocation()) > 10) {
+                if (trade.Seller.getLocation().distanceSquared(buyer.getLocation()) > AuctionHouse.getPlugin(AuctionHouse.class).getConfig().
+                        getInt("trade.max_distance")) {
                     buyer.sendMessage("Вы находитесь слишком далеко от продавца!");
                     return;
                 }

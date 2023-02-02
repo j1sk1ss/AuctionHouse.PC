@@ -1,5 +1,6 @@
 package me.js.auc.auctionhouse.object;
 
+import me.js.auc.auctionhouse.AuctionHouse;
 import me.yic.xconomy.data.syncdata.PlayerData;
 
 import org.bukkit.inventory.ItemStack;
@@ -16,7 +17,9 @@ public class Item implements Serializable {
         Price      = price;
         UniqId     = UUID.randomUUID();
     }
-    public Integer expiredDelay = 10000;
+    public Integer expiredDelay = AuctionHouse.getPlugin(AuctionHouse.class).getConfig().
+            getInt("auction.max_duration");
+
     public ItemStack Item;
     public ItemMeta ItemMeta;
     public Double Price;

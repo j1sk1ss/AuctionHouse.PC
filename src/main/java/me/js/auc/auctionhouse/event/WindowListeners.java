@@ -1,5 +1,6 @@
 package me.js.auc.auctionhouse.event;
 
+import me.js.auc.auctionhouse.AuctionHouse;
 import me.js.auc.auctionhouse.interfaces.IWindow;
 import me.js.auc.auctionhouse.scripts.ItemWorker;
 import me.js.auc.auctionhouse.scripts.PluginManager;
@@ -17,7 +18,6 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -56,9 +56,12 @@ public class WindowListeners<T> implements Listener {
 
             final Inventory thisInventory = event.getInventory();
 
-            final int windowCapacity         = 45;
-            final int previousButtonPosition = 45;
-            final int nextButtonPosition     = 53;
+            final int windowCapacity         = AuctionHouse.getPlugin(AuctionHouse.class).getConfig().
+                    getInt("auction.shop_window.shop_page_capacity");
+            final int previousButtonPosition = AuctionHouse.getPlugin(AuctionHouse.class).getConfig().
+                    getInt("auction.shop_window.previous_page_position");
+            final int nextButtonPosition     = AuctionHouse.getPlugin(AuctionHouse.class).getConfig().
+                    getInt("auction.shop_window.next_page_position");
 
             switch (windowName) {
                 case "Рынок" -> {
@@ -118,16 +121,16 @@ public class WindowListeners<T> implements Listener {
     }
 
     private void SortPage(IWindow window, int clickPosition) {
+        final int biggestPriceSortButton  = AuctionHouse.getPlugin(AuctionHouse.class).getConfig().
+                getInt("auction.windows.biggest_price_sort_position");
+        final int smallestPriceSortButton = AuctionHouse.getPlugin(AuctionHouse.class).getConfig().
+                getInt("auction.windows.smallest_price_sort_position");
+        final int timeSortButton          = AuctionHouse.getPlugin(AuctionHouse.class).getConfig().
+                getInt("auction.windows.data_sort_position");
 
-        final int biggestPriceSortButton  = 48;
-        final int smallestPriceSortButton = 49;
-        final int timeSortButton          = 46;
-
-        switch (clickPosition) {
-            case biggestPriceSortButton  -> window.PriceSort(true);
-            case smallestPriceSortButton -> window.PriceSort(false);
-            case timeSortButton          -> window.TimeSort();
-        }
+        if (clickPosition == biggestPriceSortButton)  window.PriceSort(true);
+        if (clickPosition == smallestPriceSortButton)  window.PriceSort(false);
+        if (clickPosition == timeSortButton) window.TimeSort();
     }
 
     private void SwipePage(Integer page, Player player, T window) {

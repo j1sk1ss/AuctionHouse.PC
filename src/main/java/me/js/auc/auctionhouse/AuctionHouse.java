@@ -1,7 +1,6 @@
 package me.js.auc.auctionhouse;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 
 import java.util.Objects;
 
@@ -19,16 +18,12 @@ public final class AuctionHouse extends JavaPlugin {
     public void onEnable() {
         shop = new Shop();
 
-        if (new File("AuctionData.txt").exists()) {
-            try {
-                shop = new DataWorker().GetData();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        }
+        LoadShop();
+        saveDefaultConfig();
 
         XConomyAPI xConomyAPI = new XConomyAPI();
         new ServerTicker(this, shop);
+
         CommandManager commandManager = new CommandManager(xConomyAPI, shop, this);
 
         Objects.requireNonNull(getCommand("shop")).setExecutor(commandManager);
@@ -39,6 +34,17 @@ public final class AuctionHouse extends JavaPlugin {
         Objects.requireNonNull(getCommand("trdaccept")).setExecutor(commandManager);
         Objects.requireNonNull(getCommand("trdreject")).setExecutor(commandManager);
     }
+
+    private void LoadShop() {
+        if (new File("AuctionData.txt").exists()) {
+            try {
+                shop = new DataWorker().GetData();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
     @Override
     public void onDisable() {
         new DataWorker().SaveData(shop);

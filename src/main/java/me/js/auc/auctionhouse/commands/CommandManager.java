@@ -1,5 +1,6 @@
 package me.js.auc.auctionhouse.commands;
 
+import me.js.auc.auctionhouse.AuctionHouse;
 import me.js.auc.auctionhouse.dataStore.DataWorker;
 import me.js.auc.auctionhouse.event.WindowListeners;
 import me.js.auc.auctionhouse.lists.Expired;
@@ -52,7 +53,11 @@ public class CommandManager implements CommandExecutor {
                     Double.parseDouble(args[nicknameArg + 1]), xConomyAPI.getPlayerData(seller.getUniqueId()));
 
             assert buyer != null;
-            if (seller.getLocation().distanceSquared(buyer.getLocation()) > 10) {
+
+            if (buyer.getUniqueId() == seller.getUniqueId()) return true;
+
+            if (seller.getLocation().distanceSquared(buyer.getLocation()) > AuctionHouse.getPlugin(AuctionHouse.class).getConfig().
+                    getInt("trade.max_distance")) {
                 seller.sendMessage("Вы находитесь слишком далеко от игрока!");
                 return true;
             }
@@ -73,8 +78,8 @@ public class CommandManager implements CommandExecutor {
             }
 
             playerTrade.CreateTradeOffer(seller, buyer, sellItem);
-            seller.sendMessage("Вы отправили запрос на продажу!\nДля его отмены используйте /trdreject");
-            buyer.sendMessage("У вас появился запрос на покупку!\nДанные:\n"+sellItem.Item.getI18NDisplayName()+" за: "
+            seller.sendMessage("Вы отправили запрос на покупку.\nДля его отмены используйте /trdreject");
+            buyer.sendMessage("У вас появился запрос на покупку.\nДанные:\n"+sellItem.Item.getI18NDisplayName()+" за: "
                     + sellItem.Price + "₽\nИспользуйте /trdaccept для покупки\nИспользуйте /trdreject для отказа");
             return true;
         }
@@ -103,7 +108,8 @@ public class CommandManager implements CommandExecutor {
         PlayerData playerData = xConomyAPI.getPlayerData(player.getUniqueId()); // Получаем данные об игроке из XConomy
 
         if (command.getName().equals("shop")) { // Команда /shop
-            ShopWindow shopWindow = new ShopWindow(54, "Рынок", shop, plugin); // Создаём окно рынка
+            ShopWindow shopWindow = new ShopWindow(AuctionHouse.getPlugin(AuctionHouse.class).getConfig().
+                    getInt("auction.shop_window.shop_window_size"), "Рынок", shop, plugin); // Создаём окно рынка
 
             Bukkit.getPluginManager().registerEvents(
                     new WindowListeners<>(moneyTransfer, xConomyAPI, shop, shopWindow, player), plugin
@@ -152,7 +158,8 @@ public class CommandManager implements CommandExecutor {
                 return true;
             }
 
-            ExpiredWindow expiredWindow = new ExpiredWindow(54, "Просрочка", shop, playerData);
+            ExpiredWindow expiredWindow = new ExpiredWindow(AuctionHouse.getPlugin(AuctionHouse.class).getConfig().
+                    getInt("auction.shop_window.shop_window_size"), "Просрочка", shop, playerData);
             WindowListeners<ExpiredWindow> windowListeners = new WindowListeners<>
                     (moneyTransfer, xConomyAPI, shop, expiredWindow, player);
             Bukkit.getPluginManager().registerEvents(windowListeners, plugin);

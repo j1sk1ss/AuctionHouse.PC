@@ -1,4 +1,5 @@
 package me.js.auc.auctionhouse.event;
+
 import me.js.auc.auctionhouse.lists.Shop;
 
 import org.bukkit.Bukkit;
