@@ -7,6 +7,7 @@ import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 
 import java.lang.reflect.Type;
+
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -18,8 +19,8 @@ public class ItemStackTypeAdaptor implements JsonSerializer<ConfigurationSeriali
     public ConfigurationSerializable deserialize(
             JsonElement json,
             Type typeOfT,
-            JsonDeserializationContext context) throws JsonParseException
-    {
+            JsonDeserializationContext context) throws JsonParseException {
+
         final Map<String, Object> map = new LinkedHashMap<>();
 
         for (Map.Entry<String, JsonElement> entry : json.getAsJsonObject().entrySet()) {
@@ -40,8 +41,8 @@ public class ItemStackTypeAdaptor implements JsonSerializer<ConfigurationSeriali
     public JsonElement serialize(
             ConfigurationSerializable src,
             Type typeOfSrc,
-            JsonSerializationContext context)
-    {
+            JsonSerializationContext context) {
+
         final Map<String, Object> map = new LinkedHashMap<>();
         map.put(ConfigurationSerialization.SERIALIZED_TYPE_KEY, ConfigurationSerialization.getAlias(src.getClass()));
         map.putAll(src.serialize());

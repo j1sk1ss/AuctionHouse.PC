@@ -23,29 +23,34 @@ public class ExpiredWindow implements IWindow<ExpiredWindow> {
         expiredItems = shop.PlayerExpired(playerData).expiredItems;
         expiredWindow = Bukkit.createInventory(null, size, name);
     }
+
     private final PlayerData playerData;
     private final Shop shop;
     private List<Item> expiredItems;
     private final Inventory expiredWindow;
     private final Integer PageCapacity = 45;
+
     public void TimeSort() {
         shop.PlayerExpired(playerData).expiredItems = new ArrayList<Item>(
                 new Sorting().TimeSort(expiredItems)
         );
         UpdateLocalList();
     }
+
     public void PriceSort(boolean Biggest) {
         shop.PlayerExpired(playerData).expiredItems = new ArrayList<Item>(
                 new Sorting().PriceSort(Biggest, expiredItems)
         );
         UpdateLocalList();
     }
+
     @Override
     public void ShowWindow(Integer window, Player player, Boolean open) {
         expiredWindow.clear();
         FillWindow(window * PageCapacity, window);
         if (open) player.openInventory(expiredWindow);
     }
+
     private void FillWindow(int startIndex, int indexWindow) {
         var itemWorker = new ItemWorker();
         var positions = Arrays.asList(45, 53);
@@ -58,13 +63,16 @@ public class ExpiredWindow implements IWindow<ExpiredWindow> {
             expiredWindow.setItem(i - startIndex, tempItem);
         }
     }
+
     private void UpdateLocalList() {
         expiredItems = shop.PlayerExpired(playerData).expiredItems;
     }
+
     public void TakeItem(int position) {
         shop.PlayerExpired(playerData).expiredItems.remove(position);
         UpdateLocalList();
     }
+
     @Override
     public ExpiredWindow GetWindow() {
         return this;

@@ -14,7 +14,16 @@ commands:
     usage: /sell <player_nickname> <price>
   expired:
     description: open expired window
-    usage: /expired <player_nickname>
+    usage: /expired <player_nickname> <return\nothing>
   save:
     description: saves global shop and all player`s expired items
     usage: /save
+  trade:
+    description: allows manage trade between two players with near positions
+    usage: /trade <player_nickname> <cost>
+  trdaccept:
+    description: accepts incoming trade
+    usage: /trdaccept
+  trdreject:
+    description: reject trade
+    usage: /trdreject

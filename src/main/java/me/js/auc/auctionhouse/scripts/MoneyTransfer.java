@@ -26,10 +26,16 @@ public class MoneyTransfer {
             buyer.sendMessage("Недостаточно средств!");
             return;
         }
-        shop.shopList.remove(item);
-        buyer.getInventory().addItem(new ItemStack(item.Item.getType(), item.Item.getAmount()));
-        Objects.requireNonNull(Bukkit.getPlayer(item.OwnerData.getUniqueId())).sendMessage("Продан предмет: "
-                + item.Item.getI18NDisplayName() + ". За: " + item.Price + "₽");
+
+        if (shop != null) {
+            shop.shopList.remove(item);
+        }
+
+        buyer.getInventory().addItem(new ItemWorker().SetLore(item.Item, ""));
+
+        if (Bukkit.getPlayer(item.OwnerData.getUniqueId()) != null)
+            Bukkit.getPlayer(item.OwnerData.getUniqueId()).sendMessage("Продан предмет: "
+                    + item.Item.getI18NDisplayName() + ". За: " + item.Price + "₽");
 
         ChangeBalance(buyerData, item.Price, false);
         ChangeBalance(item.OwnerData, item.Price, true);

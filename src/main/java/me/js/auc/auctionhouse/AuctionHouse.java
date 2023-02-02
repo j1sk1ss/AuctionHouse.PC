@@ -2,8 +2,7 @@ package me.js.auc.auctionhouse;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
+
 import java.util.Objects;
 
 import me.js.auc.auctionhouse.dataStore.DataWorker;
@@ -36,10 +35,13 @@ public final class AuctionHouse extends JavaPlugin {
         Objects.requireNonNull(getCommand("sell")).setExecutor(commandManager);
         Objects.requireNonNull(getCommand("expired")).setExecutor(commandManager);
         Objects.requireNonNull(getCommand("save")).setExecutor(commandManager);
+        Objects.requireNonNull(getCommand("trade")).setExecutor(commandManager);
+        Objects.requireNonNull(getCommand("trdaccept")).setExecutor(commandManager);
+        Objects.requireNonNull(getCommand("trdreject")).setExecutor(commandManager);
     }
     @Override
     public void onDisable() {
-        //new DataWorker().SaveData(shop);
+        new DataWorker().SaveData(shop);
         super.onDisable();
     }
 }

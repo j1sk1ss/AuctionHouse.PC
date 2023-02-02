@@ -27,12 +27,12 @@ public class ShopWindow implements Listener, IWindow<ShopWindow> {
     private final Inventory shopWindow;
     private final Integer PageCapacity = 45;
     private int tasked = 9;
-
     public Shop shop;
     public void TimeSort() { shopList = new Sorting().TimeSort(shop.shopList); }
     public void PriceSort(boolean Biggest) { shopList = new Sorting().PriceSort(Biggest, shop.shopList); }
     public void TransactionSyncing() { this.shopList = shop.shopList; }
     private final List<Integer> positions = Arrays.asList(45, 53);
+
     @Override
     public void ShowWindow(Integer window, Player player, Boolean open) {
         if (open) player.openInventory(shopWindow);
@@ -44,6 +44,7 @@ public class ShopWindow implements Listener, IWindow<ShopWindow> {
         tasked = Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, () ->
                 FillWindow(window * PageCapacity, window), 0L, 1L);
     }
+
     public void FillWindow(int startIndex, int indexWindow) {
         if (shopList.size() != shop.shopList.size()) TransactionSyncing();
         shopWindow.clear();
@@ -53,16 +54,21 @@ public class ShopWindow implements Listener, IWindow<ShopWindow> {
 
         for (int i = startIndex; i < PageCapacity * (indexWindow + 1); i++) {
             if (shopList.size() <= i) break;
+
             var chosenItem = shopList.get(i);
             var tempItem = chosenItem.Item;
+            tempItem.setItemMeta(chosenItem.ItemMeta);
+
             tempItem = itemWorker.SetLore(tempItem,
                     "Цена: " + chosenItem.Price + "₽" +
                     "\nЦена за еденицу: " + String.format("%.1f",(chosenItem.Price/chosenItem.Item.getAmount()))+ "₽" +
                     "\nВладелец: " + chosenItem.OwnerData.getName() +
                     "\nСрок: " + chosenItem.expiredDelay + " тик");
+
             shopWindow.setItem(i - startIndex, tempItem);
         }
     }
+
     @Override
-    public ShopWindow GetWindow() {return this;}
+    public ShopWindow GetWindow() { return this; }
 }

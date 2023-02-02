@@ -7,11 +7,11 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Expired implements Serializable {
+public class Expired implements Serializable { // Обьект просрочки
     public Expired(PlayerData owner) {
         Owner = owner;
         expiredItems = new ArrayList<>();
     }
-    public PlayerData Owner;
-    public List<Item> expiredItems;
+    public PlayerData Owner; // Владелец обьекта просрочки
+    public List<Item> expiredItems; // Лист предметов просрочки
 }
